@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         /**
-         * 线程安全 -- 性能依次下降
+         * 线程安全 -- 性能依次提高
          */
         //同一时间只能有一个线程访问该容器，效率低
         Hashtable<String,String> hashTable = new Hashtable<>();
