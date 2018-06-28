@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class ThreadSafeHashMapTest {
 
+
     public static void main(String[] args){
 
         Map<String,String> synchronizedMap = Collections.synchronizedMap(new HashMap<>());

@@ -5,21 +5,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * (args...) -> {
+ *     doSomeThing();
+ * }
+ */
+
 public class LambdaTest {
 
     public static void main(String[] args){
-        /**
-         * (args...) -> {
-         *     doSomeThing();
-         * }
-         */
+
         SingleDog(a -> System.out.println(a.toString()));
     }
 
     public static void SingleDog(Action listener) {
         List<Student> list= new ArrayList<>();
         list.add(new Student("Eddie","G"));
-        list.add(new Student("LIU_HG","G"));
+        list.add(new Student("LIU_HG","M"));
 
         Iterator<Student> iterator = list.iterator();
         while (iterator.hasNext()){

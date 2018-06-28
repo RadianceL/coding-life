@@ -12,7 +12,7 @@ public class Main {
          */
         //同一时间只能有一个线程访问该容器，效率低
         Hashtable<String,String> hashTable = new Hashtable<>();
-        //Hashtable的替代版本，同一时间只能有一个线程访问该容器
+        //Hashtable的替代版本，同一时间只能有一个线程访问该容器的方法(方法锁)
         Map<String,String> synchronizedMap = Collections.synchronizedMap(new HashMap<>());
         //高性能版本，分段锁，线程安全
         ConcurrentMap<String,String> concurrentHashMap = new ConcurrentHashMap<>();
