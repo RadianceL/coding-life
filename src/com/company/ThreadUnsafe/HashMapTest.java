@@ -32,7 +32,7 @@ public class HashMapTest {
      * @param args
      */
     public static void main(String[] args){
-        Map<String,String> hashMap = new HashMap<>(16, 0.77f);
+        Map<String,String> hashMap = new HashMap<>(20, 0.70f);
 
         String put = hashMap.put("abc", "123");
         //如果key相同，返回oldValue

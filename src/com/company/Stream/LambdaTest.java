@@ -15,7 +15,7 @@ public class LambdaTest {
 
     public static void main(String[] args){
 
-        SingleDog(a -> System.out.println(a.toString()));
+        SingleDog(a -> System.out.println(a));
     }
 
     public static void SingleDog(Action listener) {
