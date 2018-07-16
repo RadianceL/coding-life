@@ -1,5 +1,6 @@
 package com.company.Collection;
 
+import java.lang.ref.SoftReference;
 import java.util.*;
 import java.util.stream.Collectors;
 
