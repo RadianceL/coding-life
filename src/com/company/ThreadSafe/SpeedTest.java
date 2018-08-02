@@ -50,11 +50,11 @@ public class SpeedTest {
         crunchifyPerformTest(crunchifyHashTableObject);
 
         // Test with synchronizedMap Object
-        crunchifySynchronizedMapObject = Collections.synchronizedMap(new HashMap<String, Integer>());
+        crunchifySynchronizedMapObject = Collections.synchronizedMap(new HashMap<>());
         crunchifyPerformTest(crunchifySynchronizedMapObject);
 
         // Test with ConcurrentHashMap Object
-        crunchifyConcurrentHashMapObject = new ConcurrentHashMap<>();
+        crunchifyConcurrentHashMapObject = new ConcurrentHashMap<>(5000, 0.75f);
         crunchifyPerformTest(crunchifyConcurrentHashMapObject);
 
     }
@@ -72,10 +72,8 @@ public class SpeedTest {
                 crunchifyExServer.execute(() -> {
                     for (int i1 = 0; i1 < 500000; i1++) {
                         Integer crunchifyRandomNumber = (int) Math.ceil(Math.random() * 550000);
-
                         // Retrieve value. We are not using it anywhere
                         Integer crunchifyValue = crunchifyThreads.get(String.valueOf(crunchifyRandomNumber));
-
                         // Put value
                         crunchifyThreads.put(String.valueOf(crunchifyRandomNumber), crunchifyRandomNumber);
                     }
