@@ -16,7 +16,7 @@ public class ExecService {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			return "工作A";
+			return ">>> 工作A";
 		};
 		FutureTask<String> ft1 = new FutureTask<String>(callableO);
 		new Thread(ft1).start();
@@ -27,7 +27,7 @@ public class ExecService {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			return "工作B";
+			return ">>> 工作B";
 		};
 		FutureTask<String> ft2 = new FutureTask<>(callableT);
 		new Thread(ft2).start();
@@ -36,13 +36,13 @@ public class ExecService {
 		System.out.println(ft2.get());
 
 		long end = System.currentTimeMillis();
-		System.out.println("用时："+(end-start));
+		System.out.println(">>> 用时："+(end-start));
 
 	}
 
 	public static void runMyCallable() throws InterruptedException, ExecutionException {
 		System.out.println("----ExecutorService程序开始运行----");
-		Date date1 = new Date();
+		long startTime = System.currentTimeMillis();
 		ExecutorService crunchifyExServer = Executors.newFixedThreadPool(10);
 		// 创建多个有返回值的任务
 		Map<String,Future> hashMap = new ConcurrentHashMap<>();
@@ -60,8 +60,8 @@ public class ExecService {
 			System.out.println(">>> " + hashMap.get(set).get().toString());
 		}
 
-		Date date2 = new Date();
-		System.out.println("----程序结束运行----，程序运行时间【" + (date2.getTime() - date1.getTime()) + "毫秒】");
+		long endTime = System.currentTimeMillis();
+		System.out.println("----程序结束运行----，程序运行时间【" + (endTime - startTime) + "毫秒】");
 	}
 }
 
@@ -77,10 +77,10 @@ class MyCallable implements Callable<Object> {
 
 	public Object call() throws Exception {
 		System.out.println(">>>" + taskNum + "任务启动");
-		Date dateTmp1 = new Date();
+		long startTime = System.currentTimeMillis();
 		Thread.sleep(1000);
-		Date dateTmp2 = new Date();
-		long time = dateTmp2.getTime() - dateTmp1.getTime();
+		long endTime = System.currentTimeMillis();
+		long time = endTime - startTime;
 		System.out.println(">>>" + taskNum + "任务终止");
 		return taskNum + "任务返回运行结果,当前任务时间【" + time + "毫秒】";
 	}
