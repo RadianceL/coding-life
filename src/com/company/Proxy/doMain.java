@@ -4,7 +4,7 @@ import java.lang.reflect.Proxy;
 
 public class doMain {
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 
 		Subject subjectImpl = str -> System.out.println("Hello:" + str);
 

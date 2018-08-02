@@ -30,7 +30,7 @@ public class ExecService {
 
 		Callable<String> callableT = () -> {
 			try {
-				Thread.sleep(1000*2);
+				Thread.sleep(1000 * 2);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -41,7 +41,6 @@ public class ExecService {
 
 		System.out.println(ft1.get());
 		System.out.println(ft2.get());
-
 
 
 		Future submitO = crunchifyExServer.submit(callableO);
@@ -55,7 +54,7 @@ public class ExecService {
 		System.out.println(submitT.get());
 
 		long end = System.currentTimeMillis();
-		System.out.println(">>> 用时："+(end-start));
+		System.out.println(">>> 用时：" + (end - start));
 	}
 
 	public static void runCallable() throws InterruptedException, ExecutionException {
@@ -64,7 +63,7 @@ public class ExecService {
 		long startTime = System.currentTimeMillis();
 		ExecutorService crunchifyExServer = Executors.newFixedThreadPool(poolSize);
 		// 创建多个有返回值的任务
-		Map<String,Future> hashMap = new ConcurrentHashMap<>();
+		Map<String, Future> hashMap = new ConcurrentHashMap<>();
 		for (int i = 1; i <= poolSize; i++) {
 			Callable c = new MyCallable(i + " ");
 			// 执行任务并获取Future对象
@@ -83,7 +82,6 @@ public class ExecService {
 		System.out.println("----程序结束运行----，程序运行时间【" + (endTime - startTime) + "毫秒】");
 	}
 }
-
 
 
 class MyCallable implements Callable<Object> {

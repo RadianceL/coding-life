@@ -2,7 +2,7 @@ package com.company.Thread;
 
 public class ThreadTest {
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		MyThread thread = new MyThread();
 		thread.start();
 	}

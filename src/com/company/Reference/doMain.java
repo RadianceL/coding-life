@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference;
 
 public class doMain {
 
-	public static void main(String args[]){
+	public static void main(String args[]) {
 		WeakReference<String> softReference = new WeakReference<>("fff");
 		String s = softReference.get();
 		System.out.println(s);
