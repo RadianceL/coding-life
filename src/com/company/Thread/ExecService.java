@@ -2,15 +2,20 @@ package com.company.Thread;
 
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.Date;
 
 public class ExecService {
 	public static void main(String[] args) throws ExecutionException, InterruptedException {
-		//runMyCallable();
+		runCallable();
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		runTest();
+	}
 
+	public static void runTest() throws InterruptedException, ExecutionException {
+		int poolSize = 2;
 		long start = System.currentTimeMillis();
+		ExecutorService crunchifyExServer = Executors.newFixedThreadPool(poolSize);
 
-		Callable callableO = () -> {
+		Callable<String> callableO = () -> {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -18,10 +23,12 @@ public class ExecService {
 			}
 			return ">>> 工作A";
 		};
-		FutureTask<String> ft1 = new FutureTask<String>(callableO);
+		// FutureTask 因为FutureTask实现了Runnable，和Future接口，
+		// 所以即可以通过Runnable接口实现线程，也可以通过Future取得线程执行完后的结果
+		FutureTask<String> ft1 = new FutureTask<>(callableO);
 		new Thread(ft1).start();
 
-		Callable callableT = () -> {
+		Callable<String> callableT = () -> {
 			try {
 				Thread.sleep(1000*2);
 			} catch (InterruptedException e) {
@@ -35,18 +42,30 @@ public class ExecService {
 		System.out.println(ft1.get());
 		System.out.println(ft2.get());
 
+
+
+		Future submitO = crunchifyExServer.submit(callableO);
+		Future submitT = crunchifyExServer.submit(callableT);
+		//并未真正关闭，但任务不允许提交了
+		crunchifyExServer.shutdown();
+		//等待所有线程执行完毕
+		crunchifyExServer.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+
+		System.out.println(submitO.get());
+		System.out.println(submitT.get());
+
 		long end = System.currentTimeMillis();
 		System.out.println(">>> 用时："+(end-start));
-
 	}
 
-	public static void runMyCallable() throws InterruptedException, ExecutionException {
+	public static void runCallable() throws InterruptedException, ExecutionException {
 		System.out.println("----ExecutorService程序开始运行----");
+		int poolSize = 10;
 		long startTime = System.currentTimeMillis();
-		ExecutorService crunchifyExServer = Executors.newFixedThreadPool(10);
+		ExecutorService crunchifyExServer = Executors.newFixedThreadPool(poolSize);
 		// 创建多个有返回值的任务
 		Map<String,Future> hashMap = new ConcurrentHashMap<>();
-		for (int i = 1; i <= 10; i++) {
+		for (int i = 1; i <= poolSize; i++) {
 			Callable c = new MyCallable(i + " ");
 			// 执行任务并获取Future对象
 			Future future = crunchifyExServer.submit(c);
