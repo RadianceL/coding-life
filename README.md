@@ -1,7 +1,17 @@
 # Base-knowledge
 
+阅读源码的一些收获，详细的内容在注视中
+
 - 各种Map、Set、List知识点，优缺点....
-- Stream、Lambda表达式`/src/company/Stream`
-- 实现Collection:Set、List `/src/company/Collection`
-- 线程安全的Map实现类 `/src/company/ThreadSafe`
-- 非线程安全的Map实现类 `/src/company/ThreadUnsafe`
+- 实现Collection:Set、List `com.company.Collection`
+- 线程安全的Map实现类 `com.company.ThreadSafe`
+- 非线程安全的Map实现类 `com.company.ThreadUnsafe`
+
+[容器相关](https://radiancel.github.io/2018/07/30/Map-Set-List/)
+
+- Stream、Lambda表达式`com.company.Stream`
+- 动态代理 `com.company.Proxy`
+
+
+- 数据结构 `com.company.DataStrucet`
+
