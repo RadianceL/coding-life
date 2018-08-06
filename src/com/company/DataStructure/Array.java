@@ -120,9 +120,18 @@ public class Array<E> {
 	}
 
 	@Override
-	public String toString() {
-		return "Array: size = " + size + " , capacity = " + data.length  +
-				"\ndata=" + Arrays.toString(data);
+	public String toString(){
+		StringBuilder res = new StringBuilder();
+		res.append(String.format("Array: size = %d , capacity = %d\n", size, data.length));
+		res.append('[');
+		for(int i = 0 ; i < size ; i ++){
+			res.append(data[i]);
+			if(i != size - 1)
+				res.append(", ");
+		}
+		res.append(']');
+		System.out.println("内存中的数据{" + Arrays.toString(data) + "}");
+		return res.toString();
 	}
 
 	public static void main(String[] args){

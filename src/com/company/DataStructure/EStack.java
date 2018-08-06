@@ -44,39 +44,52 @@ public class EStack<E> implements TStack<E> {
 	}
 
 	@Override
-	public String toString() {
-		return "EStack{" +
-				"stack=" + stack +
-				'}';
+	public String toString(){
+		StringBuilder res = new StringBuilder();
+		res.append("Stack: ");
+		res.append('[');
+		for(int i = 0 ; i < stack.getSize() ; i ++){
+			res.append(stack.get(i));
+			if(i != stack.getSize() - 1)
+				res.append(", ");
+		}
+		res.append("] top");
+		return res.toString();
 	}
 
+
 	public static void main(String[] args){
-		EStack<String> stringEStack = new EStack<>();
-		stringEStack.push("ssss");
-		stringEStack.push("yyyy");
-		stringEStack.push("zzzz");
-		stringEStack.push("ssss");
-		stringEStack.push("yyyy");
-		stringEStack.push("zzzz");
-		stringEStack.push("ssss");
-		stringEStack.push("yyyy");
-		stringEStack.push("zzzz");
+		EStack<String> stack = new EStack<>();
+		for (int i = 1; i <= 10; i ++)
+			stack.push("测试数据 :" + i);
+
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		//输出
-		System.out.println(stringEStack);
-		System.out.println(stringEStack.pop());
-		System.out.println(stringEStack);
+		System.out.println(stack);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println("弹出栈顶数据 ： " + stack.pop());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println(stack);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-		stringEStack.push("ttttt");
+		stack.push("ttttt");
 		//查看栈顶
-		System.out.println(stringEStack.peek());
+		System.out.println( "查看栈顶数据 ：" + stack.peek());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		//弹栈
-		System.out.println(stringEStack.pop());
+		System.out.println("弹出栈顶数据 ： " + stack.pop());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		//压栈（压入size所在的位置）
-		stringEStack.push("shshshs");
-
-		System.out.println(stringEStack.pop());
-		System.out.println(stringEStack);
-
-
+		stack.push("shshshs");
+		System.out.println("弹出栈顶数据 ： " + stack.pop());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println("弹出栈顶数据 ： " + stack.pop());
+		System.out.println("弹出栈顶数据 ： " + stack.pop());
+		System.out.println("弹出栈顶数据 ： " + stack.pop());
+		System.out.println("弹出栈顶数据 ： " + stack.pop());
+		System.out.println("弹出栈顶数据 ： " + stack.pop());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println(stack);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	}
 }
