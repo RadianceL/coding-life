@@ -47,6 +47,11 @@ public class Array<E> {
 	}
 
 	//O(1)
+	public E getLast(){
+		return data[size - 1];
+	}
+
+	//O(1)
 	public E get(int pos){
 		if (pos < 0 || pos >= size)
 			throw new IllegalArgumentException("out of array, pos = " + pos + ", size= " + size);
@@ -55,7 +60,7 @@ public class Array<E> {
 	}
 
 	//O(1) 均摊复杂度
-	public void set(int pos, E e) {
+	public synchronized void set(int pos, E e) {
 		if (pos < 0 || pos >= size)
 			throw new IllegalArgumentException("set out of array, pos = " + pos + ", size= " + size);
 
@@ -63,9 +68,9 @@ public class Array<E> {
 	}
 
 	//O(n)
-	public void put(int pos, E e){
+	public synchronized void put(int pos, E e){
 		if (pos >= data.length)
-			reset(data.length * 2);
+			resize(data.length * 2);
 
 		if (size == data.length || pos < 0)
 			throw new IllegalArgumentException("add failed, array is already full pos = " + pos + " ,Size = "  + size + " ,Capacity = " + data.length);
@@ -77,8 +82,12 @@ public class Array<E> {
 		size ++;
 	}
 
+	public synchronized E deleteLast(){
+		return delete(size - 1);
+	}
+
 	//O(n)
-	public E delete(int pos){
+	public synchronized E delete(int pos){
 		if (pos < 0 || pos >= size)
 			throw new IllegalArgumentException("delete failed, pos = " + pos + " ,Size = "  + size + " ,Capacity = " + data.length);
 
@@ -89,13 +98,18 @@ public class Array<E> {
 		size --;
 
 		if (size < data.length * limit)
-			reset(data.length/2);
+			resize(data.length/2);
 
 		return e;
 	}
 
+
+
 	//O(n)
-	private void reset(int capacity){
+	private synchronized void resize(int capacity){
+		if (capacity < 5){
+			return;
+		}
 		E[] newData = (E[]) new Object[capacity];
 		for (int i = 0; i < size ; i++ ){
 			newData[i] = data[i];
