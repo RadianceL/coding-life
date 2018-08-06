@@ -1,4 +1,4 @@
-package com.company.DataStrucet;
+package com.company.DataStructure;
 
 //FIFO
 public class EStack<E> {
@@ -16,11 +16,17 @@ public class EStack<E> {
 		stack = new Array<>();
 	}
 
+	public int getSize() {
+		return size;
+	}
+
+	//O(1) 均摊复杂度
 	public void push(E e){
 		stack.put(e);
 		size ++;
 	}
 
+	//O(1)
 	public E pop(){
 		if (size <= 0)
 			throw new IllegalArgumentException("栈中无数据");
@@ -28,6 +34,7 @@ public class EStack<E> {
 		return stack.deleteLast();
 	}
 
+	//O(1)
 	public E peek(){
 		if (size <= 0)
 			throw new IllegalArgumentException("栈中无数据");
@@ -47,21 +54,27 @@ public class EStack<E> {
 		stringEStack.push("ssss");
 		stringEStack.push("yyyy");
 		stringEStack.push("zzzz");
-
+		stringEStack.push("ssss");
+		stringEStack.push("yyyy");
+		stringEStack.push("zzzz");
+		stringEStack.push("ssss");
+		stringEStack.push("yyyy");
+		stringEStack.push("zzzz");
+		//输出
+		System.out.println(stringEStack);
+		System.out.println(stringEStack.pop());
 		System.out.println(stringEStack);
 
+		stringEStack.push("ttttt");
+		//查看栈顶
 		System.out.println(stringEStack.peek());
-
+		//弹栈
 		System.out.println(stringEStack.pop());
-
-		System.out.println(stringEStack.pop());
-
-		System.out.println(stringEStack.pop());
-
+		//压栈（压入size所在的位置）
 		stringEStack.push("shshshs");
 
+		System.out.println(stringEStack.pop());
 		System.out.println(stringEStack);
-
 
 
 	}

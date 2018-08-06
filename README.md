@@ -13,5 +13,5 @@
 - 动态代理 `com.company.Proxy`
 
 
-- 数据结构 `com.company.DataStrucet`
+- 数据结构 `com.company.DataStructure`
 

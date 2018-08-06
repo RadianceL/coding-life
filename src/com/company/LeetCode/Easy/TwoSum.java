@@ -1,7 +1,5 @@
 package com.company.LeetCode.Easy;
 
-import com.company.DataStrucet.Array;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

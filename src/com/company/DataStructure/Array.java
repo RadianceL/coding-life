@@ -1,4 +1,4 @@
-package com.company.DataStrucet;
+package com.company.DataStructure;
 
 import java.util.Arrays;
 
@@ -92,11 +92,13 @@ public class Array<E> {
 			throw new IllegalArgumentException("delete failed, pos = " + pos + " ,Size = "  + size + " ,Capacity = " + data.length);
 
 		E e =  data[pos];
-		for (int i = pos ; i < size - 1; i ++){
-			data[i] = data[i + 1];
+		if (pos != size - 1){
+			for (int i = pos ; i < size - 1; i ++){
+				data[i] = data[i + 1];
+			}
 		}
 		size --;
-
+		data[size] = null;
 		if (size < data.length * limit)
 			resize(data.length/2);
 
