@@ -1,44 +1,45 @@
 package com.company.DataStructure;
 
+import com.company.DataStructure.Interface.TStack;
+
 //FIFO
-public class EStack<E> {
+public class EStack<E> implements TStack<E> {
 
 	private Array<E> stack;
 
-	private int size;
-
 	public EStack(int capacity){
 		stack = new Array<>(capacity, 0.4f);
-		size = 0;
 	}
 
 	public EStack(){
 		stack = new Array<>();
 	}
 
-	public int getSize() {
-		return size;
+	@Override
+	public int getSize(){
+		return stack.getSize();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return stack.isEmpty();
 	}
 
 	//O(1) 均摊复杂度
-	public void push(E e){
+	@Override
+	public void push(E e) {
 		stack.put(e);
-		size ++;
 	}
 
 	//O(1)
+	@Override
 	public E pop(){
-		if (size <= 0)
-			throw new IllegalArgumentException("栈中无数据");
-		size --;
 		return stack.deleteLast();
 	}
 
 	//O(1)
+	@Override
 	public E peek(){
-		if (size <= 0)
-			throw new IllegalArgumentException("栈中无数据");
-
 		return stack.getLast();
 	}
 
