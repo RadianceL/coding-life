@@ -1,4 +1,4 @@
-package com.company.Collection;
+package com.company.Container.Collection;
 
 import java.util.HashSet;
 import java.util.Set;

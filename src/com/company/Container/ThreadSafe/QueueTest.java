@@ -1,4 +1,4 @@
-package com.company.ThreadSafe;
+package com.company.Container.ThreadSafe;
 
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;

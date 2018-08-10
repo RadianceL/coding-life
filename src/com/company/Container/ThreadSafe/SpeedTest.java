@@ -1,4 +1,4 @@
-package com.company.ThreadSafe;
+package com.company.Container.ThreadSafe;
 
 import java.util.Collections;
 import java.util.HashMap;

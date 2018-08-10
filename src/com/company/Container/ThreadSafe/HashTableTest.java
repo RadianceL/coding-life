@@ -1,4 +1,4 @@
-package com.company.ThreadSafe;
+package com.company.Container.ThreadSafe;
 
 public class HashTableTest {
 

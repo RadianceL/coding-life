@@ -1,4 +1,4 @@
-package com.company.ThreadSafe;
+package com.company.Container.ThreadSafe;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,8 +1,6 @@
-package com.company.Collection;
+package com.company.Container.Collection;
 
-import java.lang.ref.SoftReference;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ArrayListTest {
 

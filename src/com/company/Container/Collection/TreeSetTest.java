@@ -1,4 +1,4 @@
-package com.company.Collection;
+package com.company.Container.Collection;
 
 import java.util.Set;
 import java.util.TreeSet;

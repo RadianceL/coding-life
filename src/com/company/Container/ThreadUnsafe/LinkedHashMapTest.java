@@ -1,4 +1,4 @@
-package com.company.ThreadUnsafe;
+package com.company.Container.ThreadUnsafe;
 
 public class LinkedHashMapTest {
 
