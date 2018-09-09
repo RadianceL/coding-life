@@ -8,7 +8,7 @@ public class TwoSum {
 
 	//O(n^2)
 	public int[] twoSum(int[] nums, int target) {
-		Map<Integer,Integer> map = new HashMap<>();
+		Map<Integer, Integer> map = new HashMap<>();
 		for (int i = 0; i < nums.length; i++) {
 //			for (int y = i; y < nums.length ;y++) {
 //				if (nums[i] + nums[y] == target && i != y) {
@@ -16,7 +16,7 @@ public class TwoSum {
 //				}
 //			}
 			int key = target - nums[i];
-			if (map.containsKey(key)){
+			if (map.containsKey(key)) {
 				return new int[]{map.get(key), i};
 			}
 			map.put(nums[i], i);
@@ -24,9 +24,9 @@ public class TwoSum {
 		throw new IllegalArgumentException("no result");
 	}
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		TwoSum sum = new TwoSum();
-		int[] nums = new int[]{3,2,4,66};
+		int[] nums = new int[]{3, 2, 4, 66};
 		int[] ints = sum.twoSum(nums, 7);
 		System.out.println("result:" + Arrays.toString(ints));
 	}

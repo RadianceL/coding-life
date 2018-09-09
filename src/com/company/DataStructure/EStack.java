@@ -3,20 +3,20 @@ package com.company.DataStructure;
 import com.company.DataStructure.Interface.TStack;
 
 //FIFO
-public class EStack<E> implements TStack<E> {
+public final class EStack<E> implements TStack<E> {
 
 	private Array<E> stack;
 
-	public EStack(int capacity){
+	public EStack(int capacity) {
 		stack = new Array<>(capacity, 0.4f);
 	}
 
-	public EStack(){
+	public EStack() {
 		stack = new Array<>();
 	}
 
 	@Override
-	public int getSize(){
+	public int getSize() {
 		return stack.getSize();
 	}
 
@@ -33,24 +33,24 @@ public class EStack<E> implements TStack<E> {
 
 	//O(1)
 	@Override
-	public E pop(){
+	public E pop() {
 		return stack.deleteLast();
 	}
 
 	//O(1)
 	@Override
-	public E peek(){
+	public E peek() {
 		return stack.getLast();
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		StringBuilder res = new StringBuilder();
 		res.append("Stack: ");
 		res.append('[');
-		for(int i = 0 ; i < stack.getSize() ; i ++){
+		for (int i = 0; i < stack.getSize(); i++) {
 			res.append(stack.get(i));
-			if(i != stack.getSize() - 1)
+			if (i != stack.getSize() - 1)
 				res.append(", ");
 		}
 		res.append("] top");
@@ -58,9 +58,9 @@ public class EStack<E> implements TStack<E> {
 	}
 
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		EStack<String> stack = new EStack<>();
-		for (int i = 1; i <= 10; i ++)
+		for (int i = 1; i <= 10; i++)
 			stack.push("测试数据 :" + i);
 
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -74,7 +74,7 @@ public class EStack<E> implements TStack<E> {
 
 		stack.push("ttttt");
 		//查看栈顶
-		System.out.println( "查看栈顶数据 ：" + stack.peek());
+		System.out.println("查看栈顶数据 ：" + stack.peek());
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		//弹栈
 		System.out.println("弹出栈顶数据 ： " + stack.pop());

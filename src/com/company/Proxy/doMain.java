@@ -1,16 +1,14 @@
 package com.company.Proxy;
 
-import java.lang.reflect.Proxy;
-
 public class doMain {
 
 	public static void main(String[] args) {
 
-		Subject subjectImpl = str -> System.out.println("Hello:" + str);
+		Subject subjectImpl = System.out::println;
 
-		Invoke invoke = new Invoke(subjectImpl);
+		InvokeObjectHandler invokeObjectHandler = new InvokeObjectHandler(subjectImpl);
 
-		Subject subject = (Subject) Proxy.newProxyInstance(subjectImpl.getClass().getClassLoader(), subjectImpl.getClass().getInterfaces(), invoke);
+		Subject subject = (Subject) invokeObjectHandler.getProxyObject();
 
 		subject.sayHello("test");
 	}
