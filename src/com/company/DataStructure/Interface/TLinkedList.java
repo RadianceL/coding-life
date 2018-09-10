@@ -1,20 +1,22 @@
 package com.company.DataStructure.Interface;
 
+import com.company.DataStructure.ELinkedList.Action;
+
 public interface TLinkedList<E> {
 
 	E put(E e);
 
 	E put(int pos, E e);
 
-	E putIfAbsent(E e);
+	void putIfAbsent(E e);
 
 	E putAll(TLinkedList<? extends E> linkedList);
 
 	E putFirstIndex(E e);
 
-	E contains(E e);
+	boolean contains(E e);
 
-	E get(E e);
+	int get(E e);
 
 	E get(int pos);
 
@@ -24,16 +26,15 @@ public interface TLinkedList<E> {
 
 	void clear();
 
-	void forEach();
+	void forEach(Action e);
 
 	boolean isEmpty();
 
-	//返回修改后大小
-	int resize(int capacity);
-
-	//获得容量
-	int getCapacity();
-
 	//获得目前有多少数据
 	int getSize();
+
+	interface NodeList<E>{
+		 E getValue();
+		 E setValue(E e);
+	}
 }

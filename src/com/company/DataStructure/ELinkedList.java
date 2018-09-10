@@ -35,7 +35,8 @@ public class ELinkedList<E> implements
 	transient int size;
 
 	public ELinkedList(){
-		node = new ElementNode<>(this.hashCode(), null,null);
+		node = new ElementNode(1,null);
+		size = 0;
 	}
 
 	@Override
@@ -44,27 +45,37 @@ public class ELinkedList<E> implements
 		return e;
 	}
 
-	@Override
-	public E put(int pos, E e) {
-		if (pos < 0 || pos > size)
-			throw new IllegalArgumentException("非法参数[pos], pos < 0 || pos >" + size);
+	public void add(int index, E e){
 
-		if (pos == 0)
-			putFirstIndex(e);
-		else{
-			ElementNode prev = node;
-			for (int i = 0; i < pos - 1; i ++)
-				prev = prev.next;
+		if(index < 0 || index > size)
+			throw new IllegalArgumentException("Add failed. Illegal index.");
 
-			prev.next = new ElementNode(e.hashCode(), e , prev.next);
-		}
+		ElementNode prev = node;
+		for(int i = 0 ; i < index ; i ++)
+			prev = prev.next;
 
-		return null;
+		prev.next = new ElementNode(e, prev.next);
+		size ++;
 	}
 
 	@Override
-	public E putIfAbsent(E e) {
-		return null;
+	public E put(int index, E e) {
+		if (index < 0 || index > size)
+			throw new IllegalArgumentException("非法参数[pos], pos < 0 || pos >" + size);
+
+		ElementNode prev = node;
+		for (int i = 0; i < index; i ++)
+			prev = prev.next;
+
+		prev.next = new ElementNode(e, prev.next);
+		size ++;
+		return e;
+	}
+
+	@Override
+	public void putIfAbsent(E e) {
+		if (get(e) == -1)
+			put(size, e);
 	}
 
 	@Override
@@ -74,63 +85,88 @@ public class ELinkedList<E> implements
 
 	@Override
 	public E putFirstIndex(E e) {
-		node = new ElementNode(e.hashCode(), e, node);
+		node = new ElementNode(e, node);
 		size ++;
 		return e;
 	}
 
 	@Override
-	public E contains(E e) {
-		if (e instanceof ElementNode){
-			ElementNode element = (ElementNode) e;
+	public boolean contains(E e) {
+		if (get(e) == -1){
+			return false;
 		}
-
-		return null;
+		return true;
 	}
 
 	@Override
-	public E get(E e) {
-		return null;
+	public int get(E e) {
+		ElementNode prev = node.next;
+		int local = 0;
+		while (prev != null){
+			if (prev.getValue().equals(e)){
+				return local;
+			}
+			local ++;
+			prev = prev.next;
+		}
+		return -1;
 	}
 
 	@Override
-	public E get(int pos) {
-		return null;
+	public E get(int index) {
+		ElementNode prev = node.next;
+		for(int i = 0 ; i < index ; i ++)
+			prev = prev.next;
+		return (E)prev.getValue();
 	}
 
 	@Override
 	public E delete(E e) {
+		ElementNode prev = node.next;
+		while (prev != null){
+			if (prev.next.getValue().equals(e)){
+				E result = (E) prev.next.getValue();
+				prev.next = prev.next.next;
+				size --;
+				return result;
+			}
+			prev = prev.next;
+		}
 		return null;
 	}
 
 	@Override
 	public E delete(int pos) {
-		return null;
+		ElementNode head = node;
+		for (int i = 0; i < pos; i++)
+			head = head.next;
+
+		ElementNode oldValue = head;
+		head.next = head.next.next;
+		oldValue.next = null;
+
+		size --;
+		return (E)oldValue.getValue();
 	}
 
 	@Override
 	public void clear() {
-
+		node.next = null;
 	}
 
 	@Override
-	public void forEach() {
+	public void forEach(Action e) {
+		ElementNode head = node;
+		while (head.next != null) {
+			e.execute(head);
+			head = head.next;
+		}
 
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return false;
-	}
-
-	@Override
-	public int resize(int capacity) {
-		return 0;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 0;
+		return size == 0;
 	}
 
 	@Override
@@ -142,17 +178,14 @@ public class ELinkedList<E> implements
 	public String toString() {
 		StringBuilder result = new StringBuilder();
 		result.append( "ELinkedList{node=[");
-		ElementNode ele = node;
-		while (ele.next != null){
+		ElementNode ele = node.next;
+		while (ele != null){
 			E value = (E)ele.getValue();
+			result.append(value + "->");
 			ele = ele.next;
 
-			if (ele.next == null)
-				result.append(value + "]");
-			else
-				result.append(value + ",");
 		}
-		result.append(", size=" + size + "}");
+		result.append("NULL], size=" + size + "}");
 
 		return result.toString();
 	}
@@ -161,7 +194,7 @@ public class ELinkedList<E> implements
 	 * 存储节点 链表
 	 * @param <E>
 	 */
-	static class ElementNode<E>{
+	static class ElementNode<E> implements NodeList<E>{
 		final int hash;
 		ElementNode previous;
 		E element;
@@ -174,24 +207,34 @@ public class ELinkedList<E> implements
 			this.next = next;
 		}
 
-		public ElementNode(int hash, E element, ElementNode next){
-			this.hash = hash;
+		public ElementNode(E element, ElementNode next){
+			this.hash = element.hashCode();
 			this.element = element;
 			this.next = next;
-		}
-
-		public E getValue() {
-			return element;
 		}
 
 		public int hashCode(){
 			return Objects.hashCode(element);
 		}
 
+		@Override
+		public E getValue() {
+			return element;
+		}
+
+		@Override
 		public E setValue(E e) {
 			E oldVal = element;
 			this.element = e;
 			return oldVal;
+		}
+
+		public ElementNode getPrevious() {
+			return previous;
+		}
+
+		public ElementNode getNext() {
+			return next;
 		}
 
 		@Override
@@ -220,6 +263,11 @@ public class ELinkedList<E> implements
 		}
 	}
 
+	@FunctionalInterface
+	public interface Action {
+		void execute(ElementNode e);
+	}
+
 	/**
 	 * 改写序列化方法
 	 * @param s
@@ -240,13 +288,18 @@ public class ELinkedList<E> implements
 	}
 
 	public static void main(String args[]){
-		ELinkedList<String> stringELinkedList = new ELinkedList<>();
-		stringELinkedList.putFirstIndex("fa");
-		stringELinkedList.putFirstIndex("fb1");
-		stringELinkedList.putFirstIndex("fb2");
-		stringELinkedList.put("fb3");
-		stringELinkedList.putFirstIndex("fb4");
-		stringELinkedList.put(4,"fc");
-		System.out.println(stringELinkedList.toString());
+		ELinkedList<String> link = new ELinkedList<>();
+		for (int i = 0; i < 10; i++)
+			link.put("test" + i);
+
+		System.out.println(link.delete("test1"));
+		System.out.println(link.toString());
+		System.out.println(link.get("test9"));
+//		System.out.println(link.get(1));
+//		link.forEach((s)->{System.out.println(s.next);});
+//		link.put("fb2");
+//		System.out.println( link.delete(0));
+//		link.clear();
+//		System.out.println(link.toString());
 	}
 }
