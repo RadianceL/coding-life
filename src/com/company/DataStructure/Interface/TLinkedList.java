@@ -10,8 +10,6 @@ public interface TLinkedList<E> {
 
 	void putIfAbsent(E e);
 
-	E putAll(TLinkedList<? extends E> linkedList);
-
 	E putFirstIndex(E e);
 
 	boolean contains(E e);

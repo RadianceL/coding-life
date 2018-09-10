@@ -79,11 +79,6 @@ public class ELinkedList<E> implements
 	}
 
 	@Override
-	public E putAll(TLinkedList<? extends E> linkedList) {
-		return null;
-	}
-
-	@Override
 	public E putFirstIndex(E e) {
 		node = new ElementNode(e, node);
 		size ++;
@@ -287,19 +282,4 @@ public class ELinkedList<E> implements
 		s.defaultReadObject();
 	}
 
-	public static void main(String args[]){
-		ELinkedList<String> link = new ELinkedList<>();
-		for (int i = 0; i < 10; i++)
-			link.put("test" + i);
-
-		System.out.println(link.delete("test1"));
-		System.out.println(link.toString());
-		System.out.println(link.get("test9"));
-//		System.out.println(link.get(1));
-//		link.forEach((s)->{System.out.println(s.next);});
-//		link.put("fb2");
-//		System.out.println( link.delete(0));
-//		link.clear();
-//		System.out.println(link.toString());
-	}
 }
