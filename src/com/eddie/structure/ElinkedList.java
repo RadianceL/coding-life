@@ -5,36 +5,55 @@ import com.eddie.structure.function.TLinkedList;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ELinkedList<E> implements
+/**
+ * @author eddie
+ */
+public final class ElinkedList<E> implements
 		Cloneable, Serializable, TLinkedList<E> {
 
-	//序列化版本信息
+	/**
+	 * 序列化版本信息
+	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 初始化大小
+	 */
 	static final int MAXIMUM_CAPACITY = 1 << 30;
 
 	/**
-	 * 牛逼算法，借鉴hashMap 获得大于等于#{cap}的最小2的幂
+	 * 借鉴hashMap 获得大于等于#{cap}的最小2的幂
 	 * @param cap
 	 * @return
 	 */
 	static final int tableSizeFor(int cap) {
-		int n = cap - 1;    //没有这步操作，则如果#{cap} 已经满足条件，结果将是#{cap}*2n 或 n的右移 1 位  如入参为10， -1 为 9，
-		n |= n >>> 1;       //0000 1001 或 0000 0100 结果为 0000 1101
-		n |= n >>> 2;       //0000 1101 或 0000 0011 结果为 0000 1111
-		n |= n >>> 4;       //0000 1111 或 0000 0000 结果为 0000 1111
-		n |= n >>> 8;       //0000 1111 或 0000 0000 结果为 0000 1111
-		n |= n >>> 16;      //0000 1111 或 0000 0000 结果为 0000 1111
+        //没有这步操作，则如果#{cap} 已经满足条件，结果将是#{cap}*2n 或 n的右移 1 位  如入参为10， -1 为 9，
+		int n = cap - 1;
+        //0000 1001 或 0000 0100 结果为 0000 1101
+		n |= n >>> 1;
+        //0000 1101 或 0000 0011 结果为 0000 1111
+		n |= n >>> 2;
+        //0000 1111 或 0000 0000 结果为 0000 1111
+		n |= n >>> 4;
+        //0000 1111 或 0000 0000 结果为 0000 1111
+		n |= n >>> 8;
+        //0000 1111 或 0000 0000 结果为 0000 1111
+		n |= n >>> 16;
 		return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
 	}
 
-	//存储单元
-	transient ElementNode<E> node;
+    /**
+     * 存储单元
+     */
+    private transient ElementNode<E> node;
 
-	//实际有多少数据
-	transient int size;
 
-	public ELinkedList(){
+    /**
+     * 实际数据
+     */
+    private transient int size;
+
+	public ElinkedList(){
 		node = new ElementNode(1,null);
 		size = 0;
 	}
@@ -47,12 +66,14 @@ public class ELinkedList<E> implements
 
 	public void add(int index, E e){
 
-		if(index < 0 || index > size)
-			throw new IllegalArgumentException("Add failed. Illegal index.");
+		if(index < 0 || index > size) {
+            throw new IllegalArgumentException("Add failed. Illegal index.");
+        }
 
 		ElementNode prev = node;
-		for(int i = 0 ; i < index ; i ++)
-			prev = prev.next;
+		for(int i = 0 ; i < index ; i ++) {
+            prev = prev.next;
+        }
 
 		prev.next = new ElementNode(e, prev.next);
 		size ++;
@@ -60,12 +81,14 @@ public class ELinkedList<E> implements
 
 	@Override
 	public E put(int index, E e) {
-		if (index < 0 || index > size)
-			throw new IllegalArgumentException("非法参数[pos], pos < 0 || pos >" + size);
+		if (index < 0 || index > size) {
+            throw new IllegalArgumentException("非法参数[pos], pos < 0 || pos >" + size);
+        }
 
 		ElementNode prev = node;
-		for (int i = 0; i < index; i ++)
-			prev = prev.next;
+		for (int i = 0; i < index; i ++) {
+            prev = prev.next;
+        }
 
 		prev.next = new ElementNode(e, prev.next);
 		size ++;
@@ -74,8 +97,9 @@ public class ELinkedList<E> implements
 
 	@Override
 	public void putIfAbsent(E e) {
-		if (get(e) == -1)
-			put(size, e);
+		if (get(e) == -1) {
+            put(size, e);
+        }
 	}
 
 	@Override
@@ -110,8 +134,9 @@ public class ELinkedList<E> implements
 	@Override
 	public E get(int index) {
 		ElementNode prev = node.next;
-		for(int i = 0 ; i < index ; i ++)
-			prev = prev.next;
+		for(int i = 0 ; i < index ; i ++) {
+            prev = prev.next;
+        }
 		return (E)prev.getValue();
 	}
 
@@ -133,8 +158,9 @@ public class ELinkedList<E> implements
 	@Override
 	public E delete(int pos) {
 		ElementNode head = node;
-		for (int i = 0; i < pos; i++)
-			head = head.next;
+		for (int i = 0; i < pos; i++) {
+            head = head.next;
+        }
 
 		ElementNode oldValue = head;
 		head.next = head.next.next;
@@ -208,6 +234,7 @@ public class ELinkedList<E> implements
 			this.next = next;
 		}
 
+		@Override
 		public int hashCode(){
 			return Objects.hashCode(element);
 		}
@@ -242,8 +269,9 @@ public class ELinkedList<E> implements
 
 		@Override
 		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
+			if (this == obj) {
+                return true;
+            }
 
 			if (obj instanceof ElementNode) {
 				ElementNode element = (ElementNode) obj;
@@ -260,6 +288,10 @@ public class ELinkedList<E> implements
 
 	@FunctionalInterface
 	public interface Action {
+        /**
+         * 执行lambda方法
+         * @param e
+         */
 		void execute(ElementNode e);
 	}
 
