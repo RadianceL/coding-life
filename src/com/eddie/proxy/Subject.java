@@ -5,10 +5,11 @@ package com.eddie.proxy;
  */
 public interface Subject {
 
-	/**
-	 * test
-	 * @param str
-	 */
-	void sayHello(String str);
+    /**
+     * test
+     *
+     * @param str
+     */
+    void sayHello(String str);
 
 }

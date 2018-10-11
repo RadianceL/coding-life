@@ -5,17 +5,17 @@ package com.eddie.thread;
  */
 public class ThreadTest {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         ThreadTask thread = new ThreadTask();
-		thread.start();
-	}
+        thread.start();
+    }
 
 }
 
 class ThreadTask extends Thread {
 
-	@Override
-	public void run() {
-		System.out.println("test");
-	}
+    @Override
+    public void run() {
+        System.out.println("test");
+    }
 }

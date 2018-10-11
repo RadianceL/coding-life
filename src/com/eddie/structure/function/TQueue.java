@@ -2,17 +2,15 @@ package com.eddie.structure.function;
 
 public interface TQueue<E> {
 
-	void put(E e);
+    void put(E e);
 
-	E get();
+    E remove();
 
-	E delete();
+    int count();
 
-	int count();
+    int getSize();
 
-	int getSize();
-
-	boolean isEmpty();
+    boolean isEmpty();
 
 
 }

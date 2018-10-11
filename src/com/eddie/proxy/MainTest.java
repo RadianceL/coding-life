@@ -5,15 +5,15 @@ package com.eddie.proxy;
  */
 public class MainTest {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		Subject subjectImpl = System.out::println;
+        Subject subjectImpl = System.out::println;
 
-		InvokeObjectHandler invokeObjectHandler = new InvokeObjectHandler(subjectImpl);
+        InvokeObjectHandler invokeObjectHandler = new InvokeObjectHandler(subjectImpl);
 
-		Subject subject = (Subject) invokeObjectHandler.getProxyObject();
+        Subject subject = (Subject) invokeObjectHandler.getProxyObject();
 
-		subject.sayHello("test");
-	}
+        subject.sayHello("test");
+    }
 
 }
