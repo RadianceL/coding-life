@@ -1,13 +1,18 @@
 package com.eddie.structure;
 
+import com.eddie.structure.function.TBinarySearchTree;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * @author eddie
  * @createTime 2018-10-10
- * @description 二分搜索树，左子树所有节点比右子树小
+ * @description 二分搜索树 左子树所有节点比右子树小 接口实现 对外屏蔽递归实现方式
  */
-public final class BinarySearchTree<E extends Comparable<E>> {
+public final class BinarySearchTree<E extends Comparable<E>> implements TBinarySearchTree<E> {
 
     //      8  --根节点
     //     / \
@@ -54,6 +59,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
      *
      * @return
      */
+    @Override
     public int getSize() {
         return size;
     }
@@ -63,6 +69,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
      *
      * @return
      */
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -72,6 +79,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
      *
      * @param e
      */
+    @Override
     public void add(E e) {
         root = addNode(root, e);
     }
@@ -82,6 +90,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
      * @param e
      * @return
      */
+    @Override
     public boolean contains(E e) {
         return contains(root, e);
     }
@@ -89,6 +98,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
     /**
      * 前序遍历 深度遍历方式
      */
+    @Override
     public void perOrder() {
         perOrder(root);
     }
@@ -96,6 +106,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
     /**
      * 中序遍历 深度遍历方式
      */
+    @Override
     public void inOrder() {
         inOrder(root);
     }
@@ -103,6 +114,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
     /**
      * 后序遍历 深度遍历方式
      */
+    @Override
     public void postOrder() {
         postOrder(root);
     }
@@ -110,24 +122,29 @@ public final class BinarySearchTree<E extends Comparable<E>> {
     /**
      * 非递归前序遍历 深度遍历方式
      */
+    @Override
     public void perOrderNR() {
         //自己实现的Stack结构 利用底层数组
         EStack<Node> stack = new EStack<>();
-        stack.push(root);
+        if (root != null) {
+            stack.push(root);
 
-        while (!stack.isEmpty()) {
-            //取出栈顶元素
-            Node cur = stack.pop();
-            System.out.println(cur.e);
+            while (!stack.isEmpty()) {
+                //取出栈顶元素
+                Node cur = stack.pop();
+                System.out.println(cur.e);
 
-            //因为利用栈结构 Stack 后进先出 所以 先压入右子树 再压左子树
-            //前提 该子节点的子节点不为空 则压入 否则不做处理
-            if (!Objects.isNull(cur.right)) {
-                stack.push(cur.right);
+                //因为利用栈结构 Stack 后进先出 所以 先压入右子树 再压左子树
+                //前提 该子节点的子节点不为空 则压入 否则不做处理
+                if (!Objects.isNull(cur.right)) {
+                    stack.push(cur.right);
+                }
+                if (!Objects.isNull(cur.left)) {
+                    stack.push(cur.left);
+                }
             }
-            if (!Objects.isNull(cur.left)) {
-                stack.push(cur.left);
-            }
+        }else {
+            throw new IllegalArgumentException("root node is empty!");
         }
     }
 
@@ -135,6 +152,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
      * 层序遍历 广度优先遍历 利用队列 QUEUE
      * 搜索策略
      */
+    @Override
     public void levelOrder(){
         /////////////////
         //      5      //   先把 5 压入队列 弹出5打印 并把5的左右子树压入队列
@@ -158,6 +176,165 @@ public final class BinarySearchTree<E extends Comparable<E>> {
                 queue.put(cur.right);
             }
         }
+    }
+
+    /**
+     * 获取该二分搜索树中最小元素E
+     * @return
+     */
+    @Override
+    public E minimum(){
+        if (size == 0){
+            throw new IllegalArgumentException("There is no element, You idiot!");
+        }
+
+        return (E) minimum(root).e;
+    }
+
+    @Override
+    public void remove(E e) {
+        root = remove(root, e);
+    }
+
+    /**
+     * 删除以node为根的二分搜索树节点为E的节点 递归算法
+     * 返回删除节点后新二分搜索树的根
+     * @param node
+     * @param e
+     * @return
+     */
+    private Node remove(Node node, E e) {
+        if (node == null){
+            //没找到
+            return null;
+        }
+        if (e.compareTo((E) node.e) < 0){
+            node.left = remove(node.left, e);
+            return node;
+        }
+
+        if (e.compareTo((E) node.e) > 0){
+            node.right = remove(node.right, e);
+            return node;
+        }
+
+        //找到了
+        if (e.compareTo((E) node.e) == 0){
+            //左子树为空
+            if (node.left == null){
+                return deleteRightNode(node);
+            }
+            //右子树为空
+            if (node.right == null){
+                return deleteLeftNode(node);
+            }
+            //待删除节点左右子树都不为空
+            Node successor = minimum(node.right);
+            successor.right = removeMin(node.right);
+            size ++;
+
+            successor.left = node.left;
+
+            node.left = node.right = null;
+            size --;
+            return successor;
+        }
+        return null;
+    }
+
+    /**
+     * 获取该二分搜索树中最大元素E
+     * @return
+     */
+    @Override
+    public E maximum(){
+        if (size == 0){
+            throw new IllegalArgumentException("There is no element, You idiot!");
+        }
+
+        return (E) maximum(root).e;
+    }
+
+    @Override
+    public E removeMin() {
+        E ret = minimum();
+        root = removeMin(root);
+        return ret;
+    }
+
+    @Override
+    public E removeMax() {
+        E ret = maximum();
+        root = removeMax(root);
+        return ret;
+    }
+
+
+
+    /**
+     * 删除以node为根节点的二分搜索树最小节点
+     * 返回删除节点后新的二分搜索树的根
+     *
+     * @param node
+     * @return
+     */
+    private Node removeMin(Node node) {
+        if (node.left == null){
+            return deleteLeftNode(node);
+        }
+        //如果node.left != null 此时说明当前node节点还有更小值 递归寻找
+        //直到找到最小值后 让node.left挂载原最小值节点的右子树
+        node.left = removeMin(node.left);
+        //最后返回整个二分搜索树的根节点 替换root节点
+        return node;
+    }
+
+    private Node deleteLeftNode(Node node){
+        //如果node.left == null 说明当前node节点为该二分搜索树的最小值节点
+        //保存当前节点的右子树 右子树为空也没关系 总体看不影响正常运行 也不影响二分搜索树的定义
+        Node rightTree = node.right;
+        //把当前node节点的右子树置为null 根据垃圾回收可达性分析 此时当前node节点不可达 下次System.gc()时就会被清理
+        node.right = null;
+        //维护size的值
+        size --;
+        //返回右子树 结束条件判定结束
+        return rightTree;
+    }
+
+    /**
+     * 删除以node为根节点的二分搜索树最大节点
+     * 返回删除节点后新的二分搜索树的根 原理同removeMin
+     *
+     * @param node
+     * @return
+     */
+    private Node removeMax(Node node) {
+        if (node.right == null){
+            return deleteRightNode(node);
+        }
+        node.right = removeMax(node.right);
+        return node;
+    }
+
+    private Node deleteRightNode(Node node){
+        Node rightTree = node.left;
+        node.left = null;
+        size --;
+        return rightTree;
+    }
+
+    private Node maximum(Node node) {
+        if (node.right == null){
+            return node;
+        }
+        return maximum(node.right);
+    }
+
+    private Node minimum(Node node) {
+        if (node.left == null){
+            return node;
+        }
+        return minimum(node.left);
     }
 
     /**
@@ -201,6 +378,7 @@ public final class BinarySearchTree<E extends Comparable<E>> {
      */
     private Node addNode(Node node, E e) {
         if (node == null) {
+            size ++;
             //先判定如果当前节点为空，那么如果需要添加，那么一定需要new一个节点Node，存放新的元素E
             return new Node(e);
         }
@@ -309,10 +487,25 @@ public final class BinarySearchTree<E extends Comparable<E>> {
 
     public static void main(String[] args) {
         BinarySearchTree<Integer> tree = new BinarySearchTree<>();
-        int[] nums = {5, 3, 6, 8, 4, 2};
-        for (int num : nums) {
-            tree.add(num);
+        Random random = new Random();
+        int count = 1000;
+
+        for (int i = 0; i < count; i++){
+            tree.add(random.nextInt(10000));
         }
-        tree.levelOrder();
+        List<Integer> list = new ArrayList<>();
+        while (!tree.isEmpty()){
+            list.add(tree.removeMin());
+        }
+
+        System.out.println(list);
+
+        int size = list.size();
+        for (int i = 1; i < size; i++){
+            if (list.get(i-1) > list.get(i)){
+                throw new IllegalArgumentException("error");
+            }
+        }
+        System.out.println("remove min is success");
     }
 }
