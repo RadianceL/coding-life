@@ -197,52 +197,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
     }
 
     /**
-     * 删除以node为根的二分搜索树节点为E的节点 递归算法
-     * 返回删除节点后新二分搜索树的根
-     * @param node
-     * @param e
-     * @return
-     */
-    private Node remove(Node node, E e) {
-        if (node == null){
-            //没找到
-            return null;
-        }
-        if (e.compareTo((E) node.e) < 0){
-            node.left = remove(node.left, e);
-            return node;
-        }
-
-        if (e.compareTo((E) node.e) > 0){
-            node.right = remove(node.right, e);
-            return node;
-        }
-
-        //找到了
-        if (e.compareTo((E) node.e) == 0){
-            //左子树为空
-            if (node.left == null){
-                return deleteRightNode(node);
-            }
-            //右子树为空
-            if (node.right == null){
-                return deleteLeftNode(node);
-            }
-            //待删除节点左右子树都不为空
-            Node successor = minimum(node.right);
-            successor.right = removeMin(node.right);
-            size ++;
-
-            successor.left = node.left;
-
-            node.left = node.right = null;
-            size --;
-            return successor;
-        }
-        return null;
-    }
-
-    /**
      * 获取该二分搜索树中最大元素E
      * @return
      */
@@ -251,7 +205,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         if (size == 0){
             throw new IllegalArgumentException("There is no element, You idiot!");
         }
-
         return (E) maximum(root).e;
     }
 
@@ -268,8 +221,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         root = removeMax(root);
         return ret;
     }
-
-
 
     /**
      * 删除以node为根节点的二分搜索树最小节点
@@ -289,18 +240,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         return node;
     }
 
-    private Node deleteLeftNode(Node node){
-        //如果node.left == null 说明当前node节点为该二分搜索树的最小值节点
-        //保存当前节点的右子树 右子树为空也没关系 总体看不影响正常运行 也不影响二分搜索树的定义
-        Node rightTree = node.right;
-        //把当前node节点的右子树置为null 根据垃圾回收可达性分析 此时当前node节点不可达 下次System.gc()时就会被清理
-        node.right = null;
-        //维护size的值
-        size --;
-        //返回右子树 结束条件判定结束
-        return rightTree;
-    }
-
     /**
      * 删除以node为根节点的二分搜索树最大节点
      * 返回删除节点后新的二分搜索树的根 原理同removeMin
@@ -316,11 +255,30 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         return node;
     }
 
+    private Node deleteLeftNode(Node node){
+        //如果node.left == null 说明当前node节点为该二分搜索树的最小值节点
+        //保存当前节点的右子树 右子树为空也没关系 总体看不影响正常运行 也不影响二分搜索树的定义
+        Node rightTree = node.right;
+        //把当前node节点的右子树置为null 根据垃圾回收可达性分析 此时当前node节点不可达 下次System.gc()时就会被清理
+        node.right = null;
+        //维护size的值
+        size --;
+        //返回右子树 结束条件判定结束
+        return rightTree;
+    }
+
     private Node deleteRightNode(Node node){
         Node rightTree = node.left;
         node.left = null;
         size --;
         return rightTree;
+    }
+
+    private Node minimum(Node node) {
+        if (node.left == null){
+            return node;
+        }
+        return minimum(node.left);
     }
 
     private Node maximum(Node node) {
@@ -330,11 +288,58 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         return maximum(node.right);
     }
 
-    private Node minimum(Node node) {
-        if (node.left == null){
+    /**
+     * 删除以node为根的二分搜索树节点为E的节点 递归算法
+     * 返回删除节点后新二分搜索树的根
+     * @param node
+     * @param e
+     * @return
+     */
+    private Node remove(Node node, E e) {
+        if (node == null){
+            //找到最后一个节点 依旧没有找到 则要删除的元素不存在 直接返回null
+            return null;
+        }
+        //如果元素比当前元素小 则在该节点的左子树递归寻找
+        if (e.compareTo((E) node.e) < 0){
+            node.left = remove(node.left, e);
             return node;
         }
-        return minimum(node.left);
+        //如果元素比当前元素大 则在该节点的右子树递归寻找
+        if (e.compareTo((E) node.e) > 0){
+            node.right = remove(node.right, e);
+            return node;
+        }
+
+        //如果当前元素与之相等 则当前节点就是要删除的节点 开始删除逻辑
+        if (e.compareTo((E) node.e) == 0){
+            //左子树为空 则直接删除当前节点 让右子树替换当前节点
+            if (node.left == null){
+                return deleteRightNode(node);
+            }
+            //右子树为空 则直接删除当前节点 让左子树替换当前节点
+            if (node.right == null){
+                return deleteLeftNode(node);
+            }
+
+            //待删除节点左右子树都不为空 找到其右子树的最小值
+            Node successor = minimum(node.right);
+            //将其删除 赋值到successor的右子树节点
+            successor.right = removeMin(node.right);
+            //因为其删除的节点并未真正删除 需要吧removeMin中size--操作加回来
+            size ++;
+
+            //将successor的左子树赋值为原当前节点的左子树
+            successor.left = node.left;
+
+            //将原节点值置空 等待系统GC处理
+            node.left = node.right = null;
+            //此时因为递归操作 栈中上一个函数会把node.right或node.left赋值为successor，所以当前这个函数中的node节点不可达
+            //此时真正删除当前节点 siz --;
+            size --;
+            return successor;
+        }
+        return null;
     }
 
     /**
