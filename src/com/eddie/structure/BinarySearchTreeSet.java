@@ -1,13 +1,13 @@
 package com.eddie.structure;
 
-import com.eddie.structure.function.Set;
+import com.eddie.structure.function.TSet;
 
 /**
  * @author eddie
  * @createTime 2018-10-14
  * @description 基于二分搜索树的Set
  */
-public class BinarySearchTreeSet<E extends Comparable<E>> implements Set<E> {
+public class BinarySearchTreeSet<E extends Comparable<E>> implements TSet<E> {
 
     private BinarySearchTree<E> bst;
 

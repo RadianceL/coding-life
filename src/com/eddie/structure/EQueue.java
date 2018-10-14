@@ -4,7 +4,10 @@ import com.eddie.structure.function.TQueue;
 
 /**
  * @author eddie
- * @param <E>
+ * @createTime 2018-7-12
+ * @description 栈结构 FIFO 先进先出
+ *
+ * 2018-10-14 eddie 更改注释
  */
 public final class EQueue<E> implements TQueue<E> {
 

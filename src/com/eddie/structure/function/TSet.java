@@ -5,7 +5,7 @@ package com.eddie.structure.function;
  * @createTime 2018-10-14
  * @description 集合接口定义
  */
-public interface Set<E> {
+public interface TSet<E> {
 
     void add(E e);
 

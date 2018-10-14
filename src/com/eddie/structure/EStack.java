@@ -2,7 +2,13 @@ package com.eddie.structure;
 
 import com.eddie.structure.function.TStack;
 
-//FIFO
+/**
+ * @author eddie
+ * @createTime 2018-7-12
+ * @description 栈结构 F】LIFO 后进先出
+ *
+ * 2018-10-14 eddie 更改注释
+ */
 public final class EStack<E> implements TStack<E> {
 
     private Array<E> stack;
@@ -25,19 +31,28 @@ public final class EStack<E> implements TStack<E> {
         return stack.isEmpty();
     }
 
-    //O(1) 均摊复杂度
+    /**
+     * O(1) 均摊复杂度
+     * @param e
+     */
     @Override
     public void push(E e) {
         stack.put(e);
     }
 
-    //O(1)
+    /**
+     * O(1)
+     * @return
+     */
     @Override
     public E pop() {
         return stack.deleteLast();
     }
 
-    //O(1)
+    /**
+     * O(1)
+     * @return
+     */
     @Override
     public E peek() {
         return stack.getLast();
@@ -50,8 +65,9 @@ public final class EStack<E> implements TStack<E> {
         res.append('[');
         for (int i = 0; i < stack.getSize(); i++) {
             res.append(stack.get(i));
-            if (i != stack.getSize() - 1)
+            if (i != stack.getSize() - 1) {
                 res.append(", ");
+            }
         }
         res.append("] top");
         return res.toString();
@@ -60,8 +76,9 @@ public final class EStack<E> implements TStack<E> {
 
     public static void main(String[] args) {
         EStack<String> stack = new EStack<>();
-        for (int i = 1; i <= 10; i++)
+        for (int i = 1; i <= 10; i++) {
             stack.push("测试数据 :" + i);
+        }
 
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         //输出
