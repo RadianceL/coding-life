@@ -63,6 +63,10 @@ public interface TBinarySearchTree<E> {
      */
     E minimum();
 
+    /**
+     * 删除任意节点
+     * @param e
+     */
     void remove(E e);
 
     /**
@@ -71,7 +75,18 @@ public interface TBinarySearchTree<E> {
      */
     E maximum();
 
+    /**
+     * 删除最小值
+     * @return
+     */
     E removeMin();
 
+    /**
+     * 删除最大值
+     * @return
+     */
     E removeMax();
+
+    E[] floor(E e);
+
 }

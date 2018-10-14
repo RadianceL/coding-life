@@ -2,8 +2,6 @@ package com.eddie.structure;
 
 import com.eddie.structure.function.TBinarySearchTree;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -220,6 +218,34 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         E ret = maximum();
         root = removeMax(root);
         return ret;
+    }
+
+    @Override
+    public E[] floor(E e) {
+        floor(root, e);
+
+        return null;
+    }
+
+    private Node floor(Node node, E e) {
+        // 中序遍历得到最接近且比e小的节点
+        if (node == null) {
+            return null;
+        }
+
+        int cmp = e.compareTo((E) node.e);
+        if (cmp == 0) {
+            return node;
+        }
+        if (cmp < 0) {
+            return floor(node.left, e);
+        }
+        Node rightNode = floor(node.right, e);
+        if (rightNode != null) {
+            return rightNode;
+        } else {
+            return node;
+        }
     }
 
     /**
@@ -498,19 +524,8 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         for (int i = 0; i < count; i++){
             tree.add(random.nextInt(10000));
         }
-        List<Integer> list = new ArrayList<>();
-        while (!tree.isEmpty()){
-            list.add(tree.removeMin());
-        }
+        tree.levelOrder();
 
-        System.out.println(list);
 
-        int size = list.size();
-        for (int i = 1; i < size; i++){
-            if (list.get(i-1) > list.get(i)){
-                throw new IllegalArgumentException("error");
-            }
-        }
-        System.out.println("remove min is success");
     }
 }
