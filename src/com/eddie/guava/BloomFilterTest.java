@@ -51,7 +51,7 @@ public class BloomFilterTest {
 
         for (int i = 0; i < size; i++) {
             if (!bloomFilter.mightContain(i)) {
-                System.out.println("有坏人逃脱了");
+                System.out.println("有数据没有被识别到，判定失效");
             }
         }
 
@@ -61,7 +61,7 @@ public class BloomFilterTest {
                 list.add(i);
             }
         }
-        System.out.println("有误伤的数量：" + list.size());
+        System.out.println("误判通过：" + list.size());
     }
 
 }
