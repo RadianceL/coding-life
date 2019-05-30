@@ -2,6 +2,8 @@ package com.eddie.proxy;
 
 /**
  * @author eddie
+ * @createTime 2017-04-23
+ * @description
  */
 public class MainTest {
 
@@ -13,7 +15,7 @@ public class MainTest {
 
         Subject subject = (Subject) invokeObjectHandler.getProxyObject();
 
-        subject.sayHello("test");
+        subject.sayHello("test123");
     }
 
 }

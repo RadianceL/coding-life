@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.el</groupId>
+    <groupId>com.eddie</groupId>
     <artifactId>Baseknowledge</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -14,15 +14,17 @@
             <artifactId>spring-core</artifactId>
             <version>5.1.3.RELEASE</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>5.1.3.RELEASE</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>27.0.1-jre</version>
+            <version>27.1-jre</version>
         </dependency>
 
         <dependency>

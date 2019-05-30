@@ -6,6 +6,8 @@ import java.lang.reflect.Proxy;
 
 /**
  * @author eddie
+ * @createTime 2017-04-13
+ * @description
  */
 public class InvokeObjectHandler implements InvocationHandler {
     /**
@@ -22,8 +24,9 @@ public class InvokeObjectHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println("即将被代理的方法");
+        System.out.println("被代理的方法开始");
         method.invoke(subject, args);
+        System.out.println("被代理的方法结束");
         return null;
     }
 

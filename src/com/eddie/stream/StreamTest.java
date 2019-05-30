@@ -2,10 +2,13 @@ package com.eddie.stream;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * 流处理
+ * @author eddie
+ * @createTime 2017-04-13
+ * @description
  */
 public class StreamTest {
 
@@ -25,14 +28,15 @@ public class StreamTest {
                 //.map(e -> e.charAt(2))
                 .sorted()
                 .peek(e -> System.out.println("打印所有数据  ----  :" + e))
-                .map(e -> String.valueOf(e)) //惰性求值，不立即返回
+                //惰性求值，不立即返回
+                .map(String::valueOf)
                 .collect(Collectors.toList());
 
         System.out.println("----------------------------");
         System.out.println(result);
 
         long count = list.stream()
-                .filter(artist -> artist == null ? false : true)
+                .filter(Objects::nonNull)
                 .count();
         System.out.println(count);
     }

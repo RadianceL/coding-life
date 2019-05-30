@@ -10,11 +10,11 @@ public final class Array<E> {
     private final float limit;
 
     public Array() {
-        this(10, 0.4f);
+        this(10, 0.55f);
     }
 
     public Array(int capacity) {
-        this(capacity, 0.4f);
+        this(capacity, 0.55f);
     }
 
     public Array(int capacity, float limit) {
@@ -23,37 +23,59 @@ public final class Array<E> {
         this.limit = limit;
     }
 
-    //O(1)
+    /**
+     * O(1)
+     * @return
+     */
     public int getSize() {
         return size;
     }
 
-    //O(1)
+    /**
+     * O(1)
+     * @return
+     */
     public int getCapacity() {
         return data.length;
     }
 
-    //O(1)
+    /**
+     * O(1)
+     * @return
+     */
     public boolean isEmpty() {
         return size == 0;
     }
 
-    //O(1)
+    /**
+     * O(1)
+     * @param e
+     */
     public void put(E e) {
         put(size, e);
     }
 
-    //O(n)
+    /**
+     * O(n)
+     * @param e
+     */
     public void addFirst(E e) {
         put(0, e);
     }
 
-    //O(1)
+    /**
+     * O(1)
+     * @return
+     */
     public E getLast() {
         return data[size - 1];
     }
 
-    //O(1)
+    /**
+     * O(1)
+     * @param pos
+     * @return
+     */
     public E get(int pos) {
         if (pos < 0 || pos >= size) {
             throw new IllegalArgumentException("out of array, pos = " + pos + ", size= " + size);
@@ -62,7 +84,11 @@ public final class Array<E> {
         return data[pos];
     }
 
-    //O(1) 均摊复杂度
+    /**
+     * O(1)
+     * @param pos
+     * @param e
+     */
     public synchronized void set(int pos, E e) {
         if (pos < 0 || pos >= size) {
             throw new IllegalArgumentException("set out of array, pos = " + pos + ", size= " + size);
@@ -71,7 +97,11 @@ public final class Array<E> {
         data[pos] = e;
     }
 
-    //O(n)
+    /**
+     * O(n)
+     * @param pos
+     * @param e
+     */
     public synchronized void put(int pos, E e) {
         if (pos >= data.length) {
             resize(data.length * 2);
@@ -93,7 +123,11 @@ public final class Array<E> {
         return delete(size - 1);
     }
 
-    //O(n)
+    /**
+     * O(n)
+     * @param pos
+     * @return
+     */
     public synchronized E delete(int pos) {
         if (pos < 0 || pos >= size) {
             throw new IllegalArgumentException("delete failed, pos = " + pos + " ,Size = " + size + " ,Capacity = " + data.length);
@@ -101,8 +135,8 @@ public final class Array<E> {
 
         E e = data[pos];
         if (pos != size - 1) {
-            for (int i = pos; i < size - 1; i++) {
-                data[i] = data[i + 1];
+            if (size - 1 - pos >= 0) {
+                System.arraycopy(data, pos + 1, data, pos, size - pos - 1);
             }
         }
         size--;
@@ -114,14 +148,17 @@ public final class Array<E> {
         return e;
     }
 
-    //O(n)
+    /**
+     * O(n)
+     * @param capacity
+     */
     private synchronized void resize(int capacity) {
         if (capacity < 5) {
             return;
         }
         E[] newData = (E[]) new Object[capacity];
-        for (int i = 0; i < size; i++) {
-            newData[i] = data[i];
+        if (size >= 0) {
+            System.arraycopy(data, 0, newData, 0, size);
         }
         data = newData;
     }
@@ -152,6 +189,5 @@ public final class Array<E> {
             array.delete(0);
             System.out.println(array + "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         }
-
     }
 }

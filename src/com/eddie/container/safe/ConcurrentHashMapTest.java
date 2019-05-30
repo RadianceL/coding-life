@@ -22,13 +22,13 @@ public class ConcurrentHashMapTest {
      */
     public static void main(String[] args) {
 
-        Map<String, String> concurrentHashMap = new ConcurrentHashMap<>();
+        Map<String, String> concurrentHashMap = new ConcurrentHashMap<>(8);
 
         //if map.get(key) == null
         //then map.put(key,value)
         concurrentHashMap.putIfAbsent("", "");
 
-
+        System.out.println(concurrentHashMap);
     }
 
 }
