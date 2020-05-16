@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class BloomFilterTest {
 
-    private static int size = 1000000;
+    private static final int size = 1000000;
 
     /**
      * 布隆过滤器原理：
@@ -41,23 +41,22 @@ public class BloomFilterTest {
      * 所以建议是使用三个参数的构造器，以免造成预料之外的内存消耗，程序设计时，应保证所有的内存占用都在预料之中
      * 数组大小的计算公式为：(long) (-n * Math.log(p) / (Math.log(2) * Math.log(2)))
      */
-
-    private static BloomFilter<Integer> bloomFilter = BloomFilter.create(Funnels.integerFunnel(), size, 0.001);
+    private static final BloomFilter<Integer> BLOOM_FILTER = BloomFilter.create(Funnels.integerFunnel(), size, 0.001);
 
     public static void main(String[] args) {
         for (int i = 0; i < size; i++) {
-            bloomFilter.put(i);
+            BLOOM_FILTER.put(i);
         }
 
         for (int i = 0; i < size; i++) {
-            if (!bloomFilter.mightContain(i)) {
+            if (!BLOOM_FILTER.mightContain(i)) {
                 System.out.println("有数据没有被识别到，判定失效");
             }
         }
 
         List<Integer> list = new ArrayList<>(1000);
         for (int i = size + 10000; i < size + 20000; i++) {
-            if (bloomFilter.mightContain(i)) {
+            if (BLOOM_FILTER.mightContain(i)) {
                 list.add(i);
             }
         }

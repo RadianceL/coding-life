@@ -13,9 +13,9 @@ public class Main {
         //同一时间只能有一个线程访问该容器，效率低
         Hashtable<String, String> hashTable = new Hashtable<>();
         //Hashtable的替代版本，同一时间只能有一个线程访问该容器的方法(方法锁)
-        Map<String, String> synchronizedMap = Collections.synchronizedMap(new HashMap<>());
+        Map<String, String> synchronizedMap = Collections.synchronizedMap(new HashMap<>(4));
         //高性能版本，分段锁，线程安全
-        ConcurrentMap<String, String> concurrentHashMap = new ConcurrentHashMap<>();
+        ConcurrentMap<String, String> concurrentHashMap = new ConcurrentHashMap<>(4);
 
         /**
          * 非线程安全
@@ -28,7 +28,7 @@ public class Main {
         //HashMap最多只允许一条记录的键为Null；允许多条记录的值为 Null。
         //HashMap不支持线程的同步（即任一时刻可以有多个线程同时写HashMap），可能会导致数据的不一致。如果需要同步，可以用 Collections的synchronizedMap方法使HashMap具有同步的能力，或者使用ConcurrentHashMap。
         //HashTable与 HashMap类似，它继承自Dictionary类。不同的是：它不允许记录的键或者值为空；它支持线程的同步（即任一时刻只有一个线程能写HashTable），因此也导致了 HashTable在写入时会比较慢。
-        Map<String, String> hashMap = new HashMap<>();
+        Map<String, String> hashMap = new HashMap<>(4);
 
         /**
          * List与Set

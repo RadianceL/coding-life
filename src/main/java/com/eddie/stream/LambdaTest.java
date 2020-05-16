@@ -2,7 +2,6 @@ package com.eddie.stream;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -14,18 +13,15 @@ import java.util.List;
 public class LambdaTest {
 
     public static void main(String[] args) {
-
-        SingleDog(a -> System.out.println(a));
+        singleDog(System.out::println);
     }
 
-    public static void SingleDog(Action listener) {
+    public static void singleDog(Action listener) {
         List<Student> list = new ArrayList<>();
         list.add(new Student("Eddie", "G"));
         list.add(new Student("LIU_HG", "M"));
-
-        Iterator<Student> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            listener.execute(iterator.next());
+        for (Student student : list) {
+            listener.execute(student);
         }
 
     }
@@ -38,11 +34,11 @@ interface Action {
 
 class Student {
     private String name;
-    private String SEX;
+    private String sex;
 
-    public Student(String name, String SEX) {
+    public Student(String name, String sex) {
         this.name = name;
-        this.SEX = SEX;
+        this.sex = sex;
     }
 
     public String getName() {
@@ -53,19 +49,19 @@ class Student {
         this.name = name;
     }
 
-    public String getSEX() {
-        return SEX;
+    public String getSex() {
+        return sex;
     }
 
-    public void setSEX(String SEX) {
-        this.SEX = SEX;
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     @Override
     public String toString() {
         return "Student{" +
                 "name='" + name + '\'' +
-                ", SEX='" + SEX + '\'' +
+                ", SEX='" + sex + '\'' +
                 '}';
     }
 }

@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
  * 2500K entried added/retrieved in 473 ms
  * For class java.util.concurrent.ConcurrentHashMap the average time is 670 ms
  */
-
 public class SpeedTest {
 
     public final static int THREAD_POOL_SIZE = 5;
