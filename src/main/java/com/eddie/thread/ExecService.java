@@ -46,8 +46,8 @@ public class ExecService {
         System.out.println(ft2.get());
 
 
-        Future submitO = crunchifyExServer.submit(callableO);
-        Future submitT = crunchifyExServer.submit(callableT);
+        Future<String> submitO = crunchifyExServer.submit(callableO);
+        Future<String> submitT = crunchifyExServer.submit(callableT);
         //并未真正关闭，但任务不允许提交了
         crunchifyExServer.shutdown();
         //等待所有线程执行完毕
@@ -66,11 +66,11 @@ public class ExecService {
         long startTime = System.currentTimeMillis();
         ExecutorService crunchifyExServer = Executors.newFixedThreadPool(poolSize);
         // 创建多个有返回值的任务
-        Map<String, Future> hashMap = new ConcurrentHashMap<>();
+        Map<String, Future<String>> hashMap = new ConcurrentHashMap<>(8);
         for (int i = 1; i <= poolSize; i++) {
-            Callable c = new CallableTask(i + " ");
+            Callable<String> c = new CallableTask(i + " ");
             // 执行任务并获取Future对象
-            Future future = crunchifyExServer.submit(c);
+            Future<String> future = crunchifyExServer.submit(c);
             //System.out.println(">>>" + future.get().toString()); 放在此时会等待任务执行完毕返回结果，否则会阻塞线程
             hashMap.put(i + "", future);
         }
@@ -78,7 +78,7 @@ public class ExecService {
         crunchifyExServer.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
 
         for (String set : hashMap.keySet()) {
-            System.out.println(">>> " + hashMap.get(set).get().toString());
+            System.out.println(">>> " + hashMap.get(set).get());
         }
 
         long endTime = System.currentTimeMillis();
@@ -87,16 +87,16 @@ public class ExecService {
 }
 
 
-class CallableTask implements Callable<Object> {
+class CallableTask implements Callable<String> {
 
-    private String taskNum;
+    private final String taskNum;
 
     CallableTask(String taskNum) {
         this.taskNum = taskNum;
     }
 
     @Override
-    public Object call() throws Exception {
+    public String call() throws Exception {
         System.out.println(">>>" + taskNum + "任务启动");
         long startTime = System.currentTimeMillis();
         Thread.sleep(1000);
