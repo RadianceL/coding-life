@@ -4,6 +4,7 @@ package com.eddie.conditional.condition;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.lang.NonNull;
 
 /**
  * @author eddie
@@ -13,7 +14,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 public class MySqlCondition implements Condition {
 
     @Override
-    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+    public boolean matches(@NonNull ConditionContext context,@NonNull AnnotatedTypeMetadata metadata) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             return true;

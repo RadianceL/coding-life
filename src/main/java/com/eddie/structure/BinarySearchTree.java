@@ -23,9 +23,9 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
     /**
      * 内部类，二分搜索树的节点
      */
-    private class Node<E> {
+    private static class Node<E> {
         public E e;
-        public Node left, right;
+        public Node<E> left, right;
 
         public Node(E e) {
             this.e = e;
@@ -37,7 +37,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
     /**
      * 根节点
      */
-    private Node root;
+    private Node<E> root;
 
     /**
      * 整个二分搜索树中一共有多少个元素E
@@ -159,12 +159,12 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         //   / \   \   //   3 <- queue <- 6 2 4 && 6 <- queue <- 2 4 8
         //  2   4   8  //   此时队列中 所有节点均为叶子节点 该轮处理完成后 队列为空 结束遍历
         /////////////////
-        EQueue<Node> queue = new EQueue<>();
+        EQueue<Node<?>> queue = new EQueue<>();
         queue.put(root);
         //队列先进先出原则 先把根节点压入队列 打印 再把左右子树压入队列
         //继续处理左右子树 打印左子树 并把左子树左右子树再压入队列 然后处理右子树
         while (!queue.isEmpty()){
-            Node cur = queue.remove();
+            Node<?> cur = queue.remove();
             System.out.println(cur.e);
 
             if (!Objects.isNull(cur.left)){
@@ -227,7 +227,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         return null;
     }
 
-    private Node floor(Node node, E e) {
+    private Node<E> floor(Node<E> node, E e) {
         // 中序遍历得到最接近且比e小的节点
         if (node == null) {
             return null;
