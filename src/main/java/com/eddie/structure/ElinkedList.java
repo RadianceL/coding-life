@@ -23,11 +23,8 @@ public final class ElinkedList<E> implements
 
     /**
      * 借鉴hashMap 获得大于等于#{cap}的最小2的幂
-     *
-     * @param cap
-     * @return
      */
-    static final int tableSizeFor(int cap) {
+    static int tableSizeFor(int cap) {
         //没有这步操作，则如果#{cap} 已经满足条件，结果将是#{cap}*2n 或 n的右移 1 位  如入参为10， -1 为 9，
         int n = cap - 1;
         //0000 1001 或 0000 0100 结果为 0000 1101

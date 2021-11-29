@@ -26,7 +26,7 @@ public class MapperProxy implements InvocationHandler {
             return null;
         }
         Set<Function> list = readMapper.getList();
-        if (null != list || 0 != list.size()) {
+        if (null != list && 0 != list.size()) {
             for (Function function : list) {
                 //id是否和接口方法名一样
                 System.out.println("获取方法名添加到list：" + function.getFuncName());

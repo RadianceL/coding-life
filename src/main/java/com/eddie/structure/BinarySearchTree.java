@@ -54,8 +54,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
 
     /**
      * 获取元素E个数
-     *
-     * @return
      */
     @Override
     public int getSize() {
@@ -64,8 +62,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
 
     /**
      * 该二分搜索树是否为空
-     *
-     * @return
      */
     @Override
     public boolean isEmpty() {
@@ -74,8 +70,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
 
     /**
      * 添加一个元素E
-     *
-     * @param e
      */
     @Override
     public void add(E e) {
@@ -84,9 +78,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
 
     /**
      * 是否包含一个元素E
-     *
-     * @param e
-     * @return
      */
     @Override
     public boolean contains(E e) {
@@ -123,13 +114,13 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
     @Override
     public void perOrderNR() {
         //自己实现的Stack结构 利用底层数组
-        EStack<Node> stack = new EStack<>();
+        EStack<Node<E>> stack = new EStack<>();
         if (root != null) {
             stack.push(root);
 
             while (!stack.isEmpty()) {
                 //取出栈顶元素
-                Node cur = stack.pop();
+                Node<E> cur = stack.pop();
                 System.out.println(cur.e);
 
                 //因为利用栈结构 Stack 后进先出 所以 先压入右子树 再压左子树
@@ -178,7 +169,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
 
     /**
      * 获取该二分搜索树中最小元素E
-     * @return
      */
     @Override
     public E minimum(){
