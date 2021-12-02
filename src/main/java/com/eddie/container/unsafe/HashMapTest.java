@@ -27,8 +27,6 @@ public class HashMapTest {
      * > HashMap 在并发执行 put 操作时会引起死循环，导致 CPU 利用率接近100%。因为多线程会导致 HashMap 的 Node 链表形成环形数据结构，
      * > 一旦形成环形数据结构，Node 的 next 节点永远不为空，就会在获取 Node 时产生死循环。
      * put并不会导致以上问题，死循环发生在扩容阶段
-     *
-     * @param args
      */
     public static void main(String[] args) {
         Map<String, String> hashMap = new HashMap<>(20, 0.70f);

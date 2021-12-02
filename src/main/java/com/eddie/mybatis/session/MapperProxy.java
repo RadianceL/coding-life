@@ -1,7 +1,7 @@
-package com.eddie.mybatis.SqlSession;
+package com.eddie.mybatis.session;
 
-import com.eddie.mybatis.SqlSessionConfig.Function;
-import com.eddie.mybatis.SqlSessionConfig.MapperBean;
+import com.eddie.mybatis.data.ExecuteMethod;
+import com.eddie.mybatis.data.MapperBean;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -9,9 +9,9 @@ import java.util.Set;
 
 public class MapperProxy implements InvocationHandler {
 
-    private Configuration myConfiguration;
+    private final Configuration myConfiguration;
 
-    private SqlSession sqlSession;
+    private final SqlSession sqlSession;
 
     public MapperProxy(Configuration myConfiguration, SqlSession sqlSession) {
         this.myConfiguration = myConfiguration;
@@ -19,15 +19,15 @@ public class MapperProxy implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         System.out.println("第二步：读取Mapper配置文件");
         MapperBean readMapper = myConfiguration.readMapper("UserMapper.xml");
         if (!method.getDeclaringClass().getName().equals(readMapper.getInterfaceName())) {
-            return null;
+            throw new RuntimeException("查询数据异常：未找到对应的配置文件");
         }
-        Set<Function> list = readMapper.getList();
+        Set<ExecuteMethod> list = readMapper.getList();
         if (null != list && 0 != list.size()) {
-            for (Function function : list) {
+            for (ExecuteMethod function : list) {
                 //id是否和接口方法名一样
                 System.out.println("获取方法名添加到list：" + function.getFuncName());
                 if (method.getName().equals(function.getFuncName())) {
@@ -36,6 +36,6 @@ public class MapperProxy implements InvocationHandler {
                 }
             }
         }
-        return null;
+        throw new RuntimeException("查询数据异常：未找到对应的方法");
     }
 }

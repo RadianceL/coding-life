@@ -45,22 +45,21 @@ public class SpeedTest {
     public static void main(String[] args) throws InterruptedException {
 
         // Test with Hashtable Object
-        crunchifyHashTableObject = new Hashtable<>();
-        crunchifyPerformTest(crunchifyHashTableObject);
+        Map<String, Integer> crunchifyHashTableObject = new Hashtable<>();
+        structPerformTest(crunchifyHashTableObject);
 
         // Test with synchronizedMap Object
-        crunchifySynchronizedMapObject = Collections.synchronizedMap(new HashMap<>());
-        crunchifyPerformTest(crunchifySynchronizedMapObject);
+        Map<String, Integer> crunchifySynchronizedMapObject = Collections.synchronizedMap(new HashMap<>());
+        structPerformTest(crunchifySynchronizedMapObject);
 
         // Test with ConcurrentHashMap Object
         crunchifyConcurrentHashMapObject = new ConcurrentHashMap<>(5000, 0.75f);
-        crunchifyPerformTest(crunchifyConcurrentHashMapObject);
+        structPerformTest(crunchifyConcurrentHashMapObject);
 
     }
 
-    public static void crunchifyPerformTest(final Map<String, Integer> crunchifyThreads) throws InterruptedException {
-
-        System.out.println("Test started for: " + crunchifyThreads.getClass());
+    public static void structPerformTest(final Map<String, Integer> struct) throws InterruptedException {
+        System.out.println("Test started for: " + struct.getClass());
         long averageTime = 0;
         for (int i = 0; i < 5; i++) {
 
@@ -72,9 +71,9 @@ public class SpeedTest {
                     for (int i1 = 0; i1 < 500000; i1++) {
                         Integer crunchifyRandomNumber = (int) Math.ceil(Math.random() * 550000);
                         // Retrieve value. We are not using it anywhere
-                        Integer crunchifyValue = crunchifyThreads.get(String.valueOf(crunchifyRandomNumber));
+                        Integer crunchifyValue = struct.get(String.valueOf(crunchifyRandomNumber));
                         // Put value
-                        crunchifyThreads.put(String.valueOf(crunchifyRandomNumber), crunchifyRandomNumber);
+                        struct.put(String.valueOf(crunchifyRandomNumber), crunchifyRandomNumber);
                     }
                 });
             }
@@ -94,7 +93,7 @@ public class SpeedTest {
             averageTime += totalTime;
             System.out.println("2500K entried added/retrieved in " + totalTime + " ms");
         }
-        System.out.println("For " + crunchifyThreads.getClass() + " the average time is " + averageTime / 5 + " ms\n");
+        System.out.println("For " + struct.getClass() + " the average time is " + averageTime / 5 + " ms\n");
     }
 
 }
