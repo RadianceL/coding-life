@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public final class Array<E> {
 
-    private E[] data;
+    private Object[] data;
     private int size;
 
     private final float limit;
@@ -18,14 +18,13 @@ public final class Array<E> {
     }
 
     public Array(int capacity, float limit) {
-        data = (E[]) new Object[capacity];
+        data = new Object[capacity];
         this.size = 0;
         this.limit = limit;
     }
 
     /**
      * O(1)
-     * @return
      */
     public int getSize() {
         return size;
@@ -33,7 +32,6 @@ public final class Array<E> {
 
     /**
      * O(1)
-     * @return
      */
     public int getCapacity() {
         return data.length;
@@ -41,7 +39,6 @@ public final class Array<E> {
 
     /**
      * O(1)
-     * @return
      */
     public boolean isEmpty() {
         return size == 0;
@@ -49,7 +46,6 @@ public final class Array<E> {
 
     /**
      * O(1)
-     * @param e
      */
     public void put(E e) {
         put(size, e);
@@ -57,7 +53,6 @@ public final class Array<E> {
 
     /**
      * O(n)
-     * @param e
      */
     public void addFirst(E e) {
         put(0, e);
@@ -65,75 +60,62 @@ public final class Array<E> {
 
     /**
      * O(1)
-     * @return
      */
+    @SuppressWarnings("unchecked")
     public E getLast() {
-        return data[size - 1];
+        return (E) data[size - 1];
     }
 
     /**
      * O(1)
-     * @param pos
-     * @return
      */
+    @SuppressWarnings("unchecked")
     public E get(int pos) {
         if (pos < 0 || pos >= size) {
             throw new IllegalArgumentException("out of array, pos = " + pos + ", size= " + size);
         }
 
-        return data[pos];
+        return (E)data[pos];
     }
 
     /**
      * O(1)
-     * @param pos
-     * @param e
      */
     public synchronized void set(int pos, E e) {
         if (pos < 0 || pos >= size) {
             throw new IllegalArgumentException("set out of array, pos = " + pos + ", size= " + size);
         }
-
         data[pos] = e;
     }
 
     /**
      * O(n)
-     * @param pos
-     * @param e
      */
-    public synchronized void put(int pos, E e) {
+    private synchronized void put(int pos, E e) {
         if (pos >= data.length) {
             resize(data.length * 2);
         }
-
         if (size == data.length || pos < 0) {
             throw new IllegalArgumentException("add failed, array is already full pos = " + pos + " ,Size = " + size + " ,Capacity = " + data.length);
         }
-
-        for (int i = size - 1; i >= pos; i--) {
-            data[i + 1] = data[i];
-        }
-
+        if (size - pos >= 0) System.arraycopy(data, pos, data, pos + 1, size - pos);
         data[pos] = e;
         size++;
     }
-
     public synchronized E deleteLast() {
         return delete(size - 1);
     }
 
     /**
      * O(n)
-     * @param pos
-     * @return
      */
+    @SuppressWarnings("unchecked")
     public synchronized E delete(int pos) {
         if (pos < 0 || pos >= size) {
             throw new IllegalArgumentException("delete failed, pos = " + pos + " ,Size = " + size + " ,Capacity = " + data.length);
         }
 
-        E e = data[pos];
+        Object e = data[pos];
         if (pos != size - 1) {
             if (size - 1 - pos >= 0) {
                 System.arraycopy(data, pos + 1, data, pos, size - pos - 1);
@@ -144,21 +126,21 @@ public final class Array<E> {
         if (size < data.length * limit) {
             resize(data.length / 2);
         }
-
-        return e;
+        return (E) e;
     }
 
     /**
      * O(n)
-     * @param capacity
      */
     private synchronized void resize(int capacity) {
         if (capacity < 5) {
             return;
         }
-        E[] newData = (E[]) new Object[capacity];
+        Object[] newData = (data.getClass() == Object[].class)
+                ?  new Object[capacity]
+                : (Object[]) java.lang.reflect.Array.newInstance(data.getClass().getComponentType(), capacity);
         if (size >= 0) {
-            System.arraycopy(data, 0, newData, 0, size);
+            System.arraycopy(data, 0, newData, 0, Math.min(data.length, capacity));
         }
         data = newData;
     }

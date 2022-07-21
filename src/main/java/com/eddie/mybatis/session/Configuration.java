@@ -1,7 +1,7 @@
-package com.eddie.mybatis.SqlSession;
+package com.eddie.mybatis.session;
 
-import com.eddie.mybatis.SqlSessionConfig.Function;
-import com.eddie.mybatis.SqlSessionConfig.MapperBean;
+import com.eddie.mybatis.data.ExecuteMethod;
+import com.eddie.mybatis.data.MapperBean;
 import com.mysql.cj.util.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -12,13 +12,13 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Configuration {
 
-    private static ClassLoader loader = ClassLoader.getSystemClassLoader();
+    private static final ClassLoader loader = ClassLoader.getSystemClassLoader();
 
     /**
      * 读取xml信息并处理
@@ -39,38 +39,16 @@ public class Configuration {
         if (!"database".equals(node.getName())) {
             throw new RuntimeException("root should be <database>");
         }
-        String driverClassName = null;
-        String url = null;
-        String username = null;
-        String password = null;
-        //获取属性节点
-        for (Element item : node.elements("property")) {
-            String value = getValue(item);
-            String name = item.attributeValue("name");
-            if (name == null || value == null) {
-                throw new RuntimeException("[database]: <property> should contain name and value");
-            }
-            //赋值
-            switch (name) {
-                case "url":
-                    url = value;
-                    break;
-                case "username":
-                    username = value;
-                    break;
-                case "password":
-                    password = value;
-                    break;
-                case "driverClassName":
-                    driverClassName = value;
-                    break;
-                default:
-                    throw new RuntimeException("[database]: <property> unknown name");
-            }
-        }
+        List<Element> property = node.elements("property");
+        Map<String, Element> propertyMap = property.stream().collect(Collectors.toMap(Element::getName, Function.identity(), (k1, k2) -> k1));
+        String url = getValue(propertyMap.get("url"));
+        String username = getValue(propertyMap.get("username"));
+        String password = getValue(propertyMap.get("password"));
+        String driverClassName = getValue(propertyMap.get("driverClassName"));
 
+        // 注册驱动
         Class.forName(driverClassName);
-        Connection connection = null;
+        Connection connection;
         try {
             //建立数据库链接
             if (StringUtils.isNullOrEmpty(url)){
@@ -78,15 +56,13 @@ public class Configuration {
             }
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return connection;
     }
 
     /**
      * 获取property属性的值,如果有value值,则读取 没有设置value,则读取内容
-     * @param node
-     * @return
      */
     private String getValue(Element node) {
         return node.hasContent() ? node.getText() : node.attributeValue("value");
@@ -102,12 +78,12 @@ public class Configuration {
             //把mapper节点的nameSpace值存为接口名
             mapper.setInterfaceName(root.attributeValue("nameSpace").trim());
             //用来存储方法的List
-            Set<Function> list = new HashSet<>();
+            Set<ExecuteMethod> list = new HashSet<>();
             //遍历根节点下所有子节点
-            for (Iterator<Element> rootIter = root.elementIterator(); rootIter.hasNext(); ) {
+            for (Iterator rootIter = root.elementIterator(); rootIter.hasNext(); ) {
                 //用来存储一条方法的信息
-                Function fun = new Function();
-                Element e = rootIter.next();
+                ExecuteMethod fun = new ExecuteMethod();
+                Element e = (Element) rootIter.next();
                 String sqltype = e.getName().trim();
                 String funcName = e.attributeValue("id").trim();
                 String sql = e.getText().trim();

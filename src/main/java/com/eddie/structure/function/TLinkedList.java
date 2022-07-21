@@ -89,7 +89,7 @@ public interface TLinkedList<E> {
      *
      * @param e
      */
-    void forEach(Action e);
+    void forEach(Action<E> e);
 
     /**
      * 是否为空

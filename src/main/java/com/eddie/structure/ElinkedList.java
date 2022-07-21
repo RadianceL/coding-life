@@ -23,11 +23,8 @@ public final class ElinkedList<E> implements
 
     /**
      * 借鉴hashMap 获得大于等于#{cap}的最小2的幂
-     *
-     * @param cap
-     * @return
      */
-    static final int tableSizeFor(int cap) {
+    static int tableSizeFor(int cap) {
         //没有这步操作，则如果#{cap} 已经满足条件，结果将是#{cap}*2n 或 n的右移 1 位  如入参为10， -1 为 9，
         int n = cap - 1;
         //0000 1001 或 0000 0100 结果为 0000 1101
@@ -55,7 +52,7 @@ public final class ElinkedList<E> implements
     private transient int size;
 
     public ElinkedList() {
-        node = new ElementNode(1, null);
+        node = new ElementNode<>((E) new Object(), null);
         size = 0;
     }
 
@@ -71,12 +68,12 @@ public final class ElinkedList<E> implements
             throw new IllegalArgumentException("Add failed. Illegal index.");
         }
 
-        ElementNode prev = node;
+        ElementNode<E> prev = node;
         for (int i = 0; i < index; i++) {
             prev = prev.next;
         }
 
-        prev.next = new ElementNode(e, prev.next);
+        prev.next = new ElementNode<>(e, prev.next);
         size++;
     }
 
@@ -86,12 +83,12 @@ public final class ElinkedList<E> implements
             throw new IllegalArgumentException("非法参数[pos], pos < 0 || pos >" + size);
         }
 
-        ElementNode prev = node;
+        ElementNode<E> prev = node;
         for (int i = 0; i < index; i++) {
             prev = prev.next;
         }
 
-        prev.next = new ElementNode(e, prev.next);
+        prev.next = new ElementNode<>(e, prev.next);
         size++;
         return e;
     }
@@ -105,22 +102,19 @@ public final class ElinkedList<E> implements
 
     @Override
     public E putFirstIndex(E e) {
-        node = new ElementNode(e, node);
+        node = new ElementNode<>(e, node);
         size++;
         return e;
     }
 
     @Override
     public boolean contains(E e) {
-        if (get(e) == -1) {
-            return false;
-        }
-        return true;
+        return get(e) != -1;
     }
 
     @Override
     public int get(E e) {
-        ElementNode prev = node.next;
+        ElementNode<E> prev = node.next;
         int local = 0;
         while (prev != null) {
             if (prev.getValue().equals(e)) {
@@ -134,19 +128,19 @@ public final class ElinkedList<E> implements
 
     @Override
     public E get(int index) {
-        ElementNode prev = node.next;
+        ElementNode<E> prev = node.next;
         for (int i = 0; i < index; i++) {
             prev = prev.next;
         }
-        return (E) prev.getValue();
+        return prev.getValue();
     }
 
     @Override
     public E delete(E e) {
-        ElementNode prev = node.next;
+        ElementNode<E> prev = node.next;
         while (prev != null) {
             if (prev.next.getValue().equals(e)) {
-                E result = (E) prev.next.getValue();
+                E result = prev.next.getValue();
                 prev.next = prev.next.next;
                 size--;
                 return result;
@@ -158,17 +152,17 @@ public final class ElinkedList<E> implements
 
     @Override
     public E delete(int pos) {
-        ElementNode head = node;
+        ElementNode<E> head = node;
         for (int i = 0; i < pos; i++) {
             head = head.next;
         }
 
-        ElementNode oldValue = head;
+        ElementNode<E> oldValue = head;
         head.next = head.next.next;
         oldValue.next = null;
 
         size--;
-        return (E) oldValue.getValue();
+        return oldValue.getValue();
     }
 
     @Override
@@ -177,13 +171,12 @@ public final class ElinkedList<E> implements
     }
 
     @Override
-    public void forEach(Action e) {
-        ElementNode head = node;
-        while (head.next != null) {
+    public void forEach(Action<E> e) {
+        ElementNode<E> head = node.next;
+        while (head != null) {
             e.execute(head);
             head = head.next;
         }
-
     }
 
     @Override
@@ -200,14 +193,15 @@ public final class ElinkedList<E> implements
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append("ELinkedList{node=[");
-        ElementNode ele = node.next;
+        ElementNode<E> ele = node.next;
         while (ele != null) {
-            E value = (E) ele.getValue();
-            result.append(value + "->");
+            E value = ele.getValue();
+            result.append(value).append("->");
             ele = ele.next;
 
         }
-        result.append("NULL], size=" + size + "}");
+        result.append("NULL], size=")
+                .append(size).append("}");
 
         return result.toString();
     }
@@ -217,20 +211,20 @@ public final class ElinkedList<E> implements
      *
      * @param <E>
      */
-    static class ElementNode<E> implements NodeList<E> {
+    public static class ElementNode<E> implements NodeList<E> {
         final int hash;
-        ElementNode previous;
+        ElementNode<E> previous;
         E element;
-        ElementNode next;
+        ElementNode<E> next;
 
-        public ElementNode(int hash, ElementNode previous, E element, ElementNode next) {
+        public ElementNode(int hash, ElementNode<E> previous, E element, ElementNode<E> next) {
             this.hash = hash;
             this.previous = previous;
             this.element = element;
             this.next = next;
         }
 
-        public ElementNode(E element, ElementNode next) {
+        public ElementNode(E element, ElementNode<E> next) {
             this.hash = element.hashCode();
             this.element = element;
             this.next = next;
@@ -253,11 +247,11 @@ public final class ElinkedList<E> implements
             return oldVal;
         }
 
-        public ElementNode getPrevious() {
+        public ElementNode<E> getPrevious() {
             return previous;
         }
 
-        public ElementNode getNext() {
+        public ElementNode<E> getNext() {
             return next;
         }
 
@@ -276,12 +270,8 @@ public final class ElinkedList<E> implements
             }
 
             if (obj instanceof ElementNode) {
-                ElementNode element = (ElementNode) obj;
-                if (this.getValue() == element.getValue()) {
-                    return true;
-                }
-
-                return false;
+                ElementNode<E> element = (ElementNode<E>) obj;
+                return this.getValue() == element.getValue();
             }
 
             return false;
@@ -289,13 +279,13 @@ public final class ElinkedList<E> implements
     }
 
     @FunctionalInterface
-    public interface Action {
+    public interface Action<E> {
         /**
          * 执行lambda方法
          *
          * @param e
          */
-        void execute(ElementNode e);
+        void execute(ElementNode<E> e);
     }
 
     /**

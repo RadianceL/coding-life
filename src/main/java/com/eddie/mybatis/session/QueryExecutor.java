@@ -1,17 +1,18 @@
-package com.eddie.mybatis.SqlSession;
+package com.eddie.mybatis.session;
 
-import com.eddie.mybatis.Mapper.User;
+import com.eddie.mybatis.test.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class QueryExcutor implements Excutor {
+public class QueryExecutor implements Executor {
 
-    private Configuration xmlConfiguration = new Configuration();
+    private final Configuration xmlConfiguration = new Configuration();
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T query(String statement, Object parameter, Object resultType) {
         System.out.println("获得一个链接");
 
@@ -36,7 +37,7 @@ public class QueryExcutor implements Excutor {
             }
             return (T) u;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             try {
                 if (set != null) {
@@ -49,7 +50,6 @@ public class QueryExcutor implements Excutor {
                 e2.printStackTrace();
             }
         }
-        return null;
     }
 
     private Connection getConnection() {

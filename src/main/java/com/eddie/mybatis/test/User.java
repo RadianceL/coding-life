@@ -1,4 +1,4 @@
-package com.eddie.mybatis.Mapper;
+package com.eddie.mybatis.test;
 
 public class User {
 

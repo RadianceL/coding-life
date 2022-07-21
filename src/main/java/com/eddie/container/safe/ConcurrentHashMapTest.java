@@ -17,8 +17,6 @@ public class ConcurrentHashMapTest {
      * CHM返回的迭代器是弱一致性，fail-safe并且不会抛出ConcurrentModificationException异常
      * CHM不允许null的键值
      * 可以使用CHM代替HashTable，但要记住CHM不会锁住整个Map
-     *
-     * @param args
      */
     public static void main(String[] args) {
 

@@ -13,7 +13,7 @@ public class InvokeObjectHandler implements InvocationHandler {
     /**
      * 这个就是我们要代理的真实对象
      */
-    private Object subject;
+    private final Object subject;
 
     /**
      * 构造方法，给我们要代理的真实对象赋初值
@@ -25,9 +25,9 @@ public class InvokeObjectHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         System.out.println("被代理的方法开始");
-        method.invoke(subject, args);
+        Object invoke = method.invoke(subject, args);
         System.out.println("被代理的方法结束");
-        return null;
+        return invoke;
     }
 
     public Object getProxyObject() {

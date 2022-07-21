@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 布隆过滤器
  * @author eddie
- * @createTime 2018-12-10
- * @description 布隆过滤器
+ * @since 2018-12-10
  */
 public class BloomFilterTest {
 

@@ -9,7 +9,6 @@ public interface TBinarySearchTree<E> {
 
     /**
      * 获取二分搜索树中的元素个数
-     * @return
      */
     int getSize();
 
@@ -20,14 +19,11 @@ public interface TBinarySearchTree<E> {
 
     /**
      * 添加一个元素E
-     * @param e
      */
     void add(E e);
 
     /**
      * 判断树中是否包含元素E
-     * @param e
-     * @return
      */
     boolean contains(E e);
 
@@ -59,31 +55,26 @@ public interface TBinarySearchTree<E> {
 
     /**
      * 获取最小值
-     * @return
      */
     E minimum();
 
     /**
      * 删除任意节点
-     * @param e
      */
     void remove(E e);
 
     /**
      * 获取最大值
-     * @return
      */
     E maximum();
 
     /**
      * 删除最小值
-     * @return
      */
     E removeMin();
 
     /**
      * 删除最大值
-     * @return
      */
     E removeMax();
 
