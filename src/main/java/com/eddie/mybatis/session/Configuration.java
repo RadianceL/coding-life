@@ -80,15 +80,15 @@ public class Configuration {
             //用来存储方法的List
             Set<ExecuteMethod> list = new HashSet<>();
             //遍历根节点下所有子节点
-            for (Iterator rootIter = root.elementIterator(); rootIter.hasNext(); ) {
+            for (Iterator<Element> rootIter = root.elementIterator(); rootIter.hasNext(); ) {
                 //用来存储一条方法的信息
                 ExecuteMethod fun = new ExecuteMethod();
-                Element e = (Element) rootIter.next();
-                String sqltype = e.getName().trim();
+                Element e = rootIter.next();
+                String sqlType = e.getName().trim();
                 String funcName = e.attributeValue("id").trim();
                 String sql = e.getText().trim();
                 String resultType = e.attributeValue("resultType").trim();
-                fun.setSqlType(sqltype);
+                fun.setSqlType(sqlType);
                 fun.setFuncName(funcName);
                 Object newInstance = null;
                 try {
