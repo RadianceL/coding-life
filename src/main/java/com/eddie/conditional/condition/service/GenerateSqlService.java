@@ -9,7 +9,6 @@ public interface GenerateSqlService {
 
     /**
      * 简介
-     * @return
      */
     String show();
 }

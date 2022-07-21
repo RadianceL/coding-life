@@ -44,10 +44,9 @@ public class Configuration {
         String username = null;
         String password = null;
         //获取属性节点
-        for (Object item : node.elements("property")) {
-            Element i = (Element) item;
-            String value = getValue(i);
-            String name = i.attributeValue("name");
+        for (Element item : node.elements("property")) {
+            String value = getValue(item);
+            String name = item.attributeValue("name");
             if (name == null || value == null) {
                 throw new RuntimeException("[database]: <property> should contain name and value");
             }
@@ -93,7 +92,6 @@ public class Configuration {
         return node.hasContent() ? node.getText() : node.attributeValue("value");
     }
 
-    @SuppressWarnings("rawtypes")
     public MapperBean readMapper(String path) {
         MapperBean mapper = new MapperBean();
         try {
@@ -106,10 +104,10 @@ public class Configuration {
             //用来存储方法的List
             Set<Function> list = new HashSet<>();
             //遍历根节点下所有子节点
-            for (Iterator rootIter = root.elementIterator(); rootIter.hasNext(); ) {
+            for (Iterator<Element> rootIter = root.elementIterator(); rootIter.hasNext(); ) {
                 //用来存储一条方法的信息
                 Function fun = new Function();
-                Element e = (Element) rootIter.next();
+                Element e = rootIter.next();
                 String sqltype = e.getName().trim();
                 String funcName = e.attributeValue("id").trim();
                 String sql = e.getText().trim();

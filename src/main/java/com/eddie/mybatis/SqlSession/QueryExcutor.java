@@ -14,11 +14,12 @@ public class QueryExcutor implements Excutor {
     @Override
     public <T> T query(String statement, Object parameter, Object resultType) {
         System.out.println("获得一个链接");
-        Connection connection = getConnection();
+
         ResultSet set = null;
         PreparedStatement pre = null;
-        try {
+        try (Connection connection = getConnection()){
             System.out.println("放入SQL语句");
+
             pre = connection.prepareStatement(statement);
             //设置参数
             System.out.println("设置参数");
@@ -44,9 +45,6 @@ public class QueryExcutor implements Excutor {
                 if (pre != null) {
                     pre.close();
                 }
-                if (connection != null) {
-                    connection.close();
-                }
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
@@ -57,11 +55,9 @@ public class QueryExcutor implements Excutor {
     private Connection getConnection() {
         try {
             System.out.println("从config.xml中获取参数");
-            Connection connection = xmlConfiguration.build("config.xml");
-            return connection;
+            return xmlConfiguration.build("config.xml");
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("无法获取数据库链接");
         }
-        return null;
     }
 }

@@ -19,7 +19,6 @@ public class MyConfig {
     /**
      * @Condition 放在类上面，如果配置的条件符合，下面所有的Bean都会被实例化，并交付给Spring容器管理
      * @Condition 放在方法上面，如果配置的条件符合，方法内指定的类会被实例化
-     * @return
      */
 
     @Bean(name = "service")
