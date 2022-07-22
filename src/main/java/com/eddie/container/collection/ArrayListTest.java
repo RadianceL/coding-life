@@ -31,10 +31,8 @@ public class ArrayListTest {
         boolean contains = list.contains("0");
 
         //迭代器
-        Iterator<String> iterator = list.iterator();
         //for循环其实是一个封装了迭代的语法块,所以我们遍历采用迭代器
-        while (iterator.hasNext()) {
-            String str = iterator.next();
+        for (String str : list) {
             System.out.println(str);
         }
 

@@ -86,7 +86,7 @@ public class SpeedTest {
             //awaitTermination()是阻塞的，返回结果是线程池是否已停止（true/false）；shutdown()不阻塞。
 
             // 确保线程中任务执行完毕
-            crunchifyExServer.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+            boolean result = crunchifyExServer.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
 
             long entTime = System.nanoTime();
             long totalTime = (entTime - startTime) / 1000000L;
