@@ -52,7 +52,7 @@ public interface Tree<E> {
      * 层序遍历 广度优先遍历 利用队列 QUEUE
      * 搜索策略
      */
-    void levelOrder();
+    void levelOrder(TreeAction<E> treeAction);
 
     /**
      * 获取最小值

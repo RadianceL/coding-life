@@ -2,6 +2,7 @@ package com.eddie.structure.tree.impl;
 
 import com.eddie.structure.EStack;
 import com.eddie.structure.tree.Tree;
+import com.eddie.structure.tree.TreeAction;
 
 import java.util.ArrayDeque;
 import java.util.Objects;
@@ -144,7 +145,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree<E> {
      * 搜索策略
      */
     @Override
-    public void levelOrder(){
+    public void levelOrder(TreeAction<E> treeAction){
         /////////////////
         //      5      //   先把 5 压入队列 弹出5打印 并把5的左右子树压入队列
         //     / \     //   5 <- queue <- 3 6
@@ -152,14 +153,13 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree<E> {
         //   / \   \   //   3 <- queue <- 6 2 4 && 6 <- queue <- 2 4 8
         //  2   4   8  //   此时队列中 所有节点均为叶子节点 该轮处理完成后 队列为空 结束遍历
         /////////////////
-        Queue<Node<?>> queue = new ArrayDeque<>();
+        Queue<Node<E>> queue = new ArrayDeque<>();
         queue.add(root);
         //队列先进先出原则 先把根节点压入队列 打印 再把左右子树压入队列
         //继续处理左右子树 打印左子树 并把左子树左右子树再压入队列 然后处理右子树
         while (!queue.isEmpty()){
-            Node<?> cur = queue.remove();
-            System.out.println(cur.e);
-
+            Node<E> cur = queue.remove();
+            treeAction.doAction(cur.e);
             if (!Objects.isNull(cur.left)) {
                 queue.add(cur.left);
             }
@@ -507,8 +507,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree<E> {
         tree.add(5);
         tree.add(1);
         tree.add(2);
-        tree.perOrderNR();
-
+        tree.levelOrder(System.out::println);
         System.out.println(tree);
     }
 }
