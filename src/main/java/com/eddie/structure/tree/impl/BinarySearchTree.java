@@ -506,7 +506,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements Tree<E> 
         tree.add(5);
         tree.add(1);
         tree.add(2);
-        tree.levelOrder();
+        tree.perOrderNR();
 
         System.out.println(tree);
     }
