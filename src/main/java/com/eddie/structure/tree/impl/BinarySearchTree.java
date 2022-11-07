@@ -1,16 +1,17 @@
-package com.eddie.structure;
+package com.eddie.structure.tree.impl;
 
-import com.eddie.structure.function.TBinarySearchTree;
+import com.eddie.structure.EQueue;
+import com.eddie.structure.EStack;
+import com.eddie.structure.tree.Tree;
 
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author eddie
  * @createTime 2018-10-10
  * @description 二分搜索树 左子树所有节点比右子树小 接口实现 对外屏蔽递归实现方式
  */
-public final class BinarySearchTree<E extends Comparable<E>> implements TBinarySearchTree<E> {
+public final class BinarySearchTree<E extends Comparable<E>> implements Tree<E> {
 
     //      8  --根节点
     //     / \
@@ -150,19 +151,19 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         //   / \   \   //   3 <- queue <- 6 2 4 && 6 <- queue <- 2 4 8
         //  2   4   8  //   此时队列中 所有节点均为叶子节点 该轮处理完成后 队列为空 结束遍历
         /////////////////
-        EQueue<Node<?>> queue = new EQueue<>();
-        queue.put(root);
+        Queue<Node<?>> queue = new ArrayDeque<>();
+        queue.add(root);
         //队列先进先出原则 先把根节点压入队列 打印 再把左右子树压入队列
         //继续处理左右子树 打印左子树 并把左子树左右子树再压入队列 然后处理右子树
         while (!queue.isEmpty()){
             Node<?> cur = queue.remove();
             System.out.println(cur.e);
 
-            if (!Objects.isNull(cur.left)){
-                queue.put(cur.left);
+            if (!Objects.isNull(cur.left)) {
+                queue.add(cur.left);
             }
-            if (!Objects.isNull(cur.right)){
-                queue.put(cur.right);
+            if (!Objects.isNull(cur.right)) {
+                queue.add(cur.right);
             }
         }
     }
@@ -176,7 +177,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
             throw new IllegalArgumentException("There is no element, You idiot!");
         }
 
-        return (E) minimum(root).e;
+        return minimum(root).e;
     }
 
     @Override
@@ -193,7 +194,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         if (size == 0){
             throw new IllegalArgumentException("There is no element, You idiot!");
         }
-        return (E) maximum(root).e;
+        return maximum(root).e;
     }
 
     @Override
@@ -230,12 +231,8 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         if (cmp < 0) {
             return floor(node.left, e);
         }
-        Node rightNode = floor(node.right, e);
-        if (rightNode != null) {
-            return rightNode;
-        } else {
-            return node;
-        }
+        Node<E> rightNode = floor(node.right, e);
+        return Objects.requireNonNullElse(rightNode, node);
     }
 
     /**
@@ -245,7 +242,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      * @param node
      * @return
      */
-    private Node removeMin(Node node) {
+    private Node<E> removeMin(Node<E> node) {
         if (node.left == null){
             return deleteLeftNode(node);
         }
@@ -263,7 +260,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      * @param node
      * @return
      */
-    private Node removeMax(Node node) {
+    private Node<E> removeMax(Node<E> node) {
         if (node.right == null){
             return deleteRightNode(node);
         }
@@ -271,10 +268,10 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         return node;
     }
 
-    private Node deleteLeftNode(Node node){
+    private Node<E> deleteLeftNode(Node<E> node){
         //如果node.left == null 说明当前node节点为该二分搜索树的最小值节点
         //保存当前节点的右子树 右子树为空也没关系 总体看不影响正常运行 也不影响二分搜索树的定义
-        Node rightTree = node.right;
+        Node<E> rightTree = node.right;
         //把当前node节点的右子树置为null 根据垃圾回收可达性分析 此时当前node节点不可达 下次System.gc()时就会被清理
         node.right = null;
         //维护size的值
@@ -283,21 +280,21 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         return rightTree;
     }
 
-    private Node deleteRightNode(Node node){
-        Node rightTree = node.left;
+    private Node<E> deleteRightNode(Node<E> node){
+        Node<E> rightTree = node.left;
         node.left = null;
         size --;
         return rightTree;
     }
 
-    private Node minimum(Node node) {
+    private Node<E> minimum(Node<E> node) {
         if (node.left == null){
             return node;
         }
         return minimum(node.left);
     }
 
-    private Node maximum(Node node) {
+    private Node<E> maximum(Node<E> node) {
         if (node.right == null){
             return node;
         }
@@ -311,7 +308,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      * @param e
      * @return
      */
-    private Node remove(Node node, E e) {
+    private Node<E> remove(Node<E> node, E e) {
         if (node == null){
             //找到最后一个节点 依旧没有找到 则要删除的元素不存在 直接返回null
             return null;
@@ -339,7 +336,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
             }
 
             //待删除节点左右子树都不为空 找到其右子树的最小值
-            Node successor = minimum(node.right);
+            Node<E> successor = minimum(node.right);
             //将其删除 赋值到successor的右子树节点
             successor.right = removeMin(node.right);
             //因为其删除的节点并未真正删除 需要吧removeMin中size--操作加回来
@@ -365,7 +362,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      * @param node
      * @param e
      */
-    private void add(Node node, E e) {
+    private void add(Node<E> node, E e) {
         if (e.equals(node.e)) {
             //终止条件 不考虑相等的情况
             return;
@@ -397,11 +394,11 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      * @param node
      * @param e
      */
-    private Node addNode(Node node, E e) {
+    private Node<E> addNode(Node<E> node, E e) {
         if (node == null) {
             size ++;
             //先判定如果当前节点为空，那么如果需要添加，那么一定需要new一个节点Node，存放新的元素E
-            return new Node(e);
+            return new Node<>(e);
         }
         if (e.compareTo((E) node.e) < 0) {
             //如果 要添加的元素E < 当前节点的元素E 则需要把新的节点挂载在当前元素的左子树上
@@ -420,13 +417,13 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      * @param e
      * @return
      */
-    private boolean contains(Node node, E e) {
+    private boolean contains(Node<E> node, E e) {
         if (node == null) {
             return false;
         }
-        if (e.compareTo((E) node.e) == 0) {
+        if (e.compareTo(node.e) == 0) {
             return true;
-        } else if (e.compareTo((E) node.e) < 0) {
+        } else if (e.compareTo(node.e) < 0) {
             return contains(node.left, e);
         } else {
             return contains(node.right, e);
@@ -438,11 +435,11 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      *
      * @param node
      */
-    private void perOrder(Node node) {
+    private void perOrder(Node<E> node) {
         if (node == null) {
             return;
         }
-        //do some thing
+        //do something
         System.out.println(node.e);
         perOrder(node.left);
         perOrder(node.right);
@@ -454,12 +451,12 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      *
      * @param node
      */
-    private void inOrder(Node node) {
+    private void inOrder(Node<E> node) {
         if (node == null) {
             return;
         }
         inOrder(node.left);
-        //do some thing
+        //do something
         System.out.println(node.e);
         inOrder(node.right);
     }
@@ -469,13 +466,13 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
      *
      * @param node
      */
-    private void postOrder(Node node) {
+    private void postOrder(Node<E> node) {
         if (node == null) {
             return;
         }
         postOrder(node.left);
         postOrder(node.right);
-        //do some thing
+        //do something
         System.out.println(node.e);
     }
 
@@ -487,35 +484,32 @@ public final class BinarySearchTree<E extends Comparable<E>> implements TBinaryS
         return result.toString();
     }
 
-    private void generateBinarySearchTreeResultString(Node node, int depth, StringBuilder result) {
+    private void generateBinarySearchTreeResultString(Node<E> node, int depth, StringBuilder result) {
         if (node == null) {
-            result.append(generateDepthString(depth) + "null\n");
+            result.append(generateDepthString(depth)).append("null\n");
             return;
         }
 
-        result.append(generateDepthString(depth) + node.e + "\n");
+        result.append(generateDepthString(depth)).append(node.e).append("\n");
         generateBinarySearchTreeResultString(node.left, depth + 1, result);
         generateBinarySearchTreeResultString(node.right, depth + 1, result);
     }
 
     private String generateDepthString(int depth) {
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < depth; i++) {
-            result.append("-");
-        }
+        result.append("-".repeat(Math.max(0, depth)));
         return result.toString();
     }
 
     public static void main(String[] args) {
         BinarySearchTree<Integer> tree = new BinarySearchTree<>();
-        Random random = new Random();
-        int count = 1000;
-
-        for (int i = 0; i < count; i++){
-            tree.add(random.nextInt(10000));
-        }
+        tree.add(3);
+        tree.add(4);
+        tree.add(5);
+        tree.add(1);
+        tree.add(2);
         tree.levelOrder();
 
-
+        System.out.println(tree.toString());
     }
 }

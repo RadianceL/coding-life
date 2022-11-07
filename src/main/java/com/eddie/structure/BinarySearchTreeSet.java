@@ -1,6 +1,7 @@
 package com.eddie.structure;
 
 import com.eddie.structure.function.TSet;
+import com.eddie.structure.tree.impl.BinarySearchTree;
 
 /**
  * @author eddie

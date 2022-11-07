@@ -1,11 +1,12 @@
-package com.eddie.structure.function;
+package com.eddie.structure.tree;
 
 /**
- * @author eddie
- * @createTime 2018-10-11
- * @description 二分搜索树接口类
+ * 树接口
+ *
+ * @author eddie.lys
+ * @since 2022/11/7
  */
-public interface TBinarySearchTree<E> {
+public interface Tree<E> {
 
     /**
      * 获取二分搜索树中的元素个数
@@ -79,5 +80,4 @@ public interface TBinarySearchTree<E> {
     E removeMax();
 
     E[] floor(E e);
-
 }
