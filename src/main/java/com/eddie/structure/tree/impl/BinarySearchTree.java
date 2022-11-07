@@ -368,18 +368,18 @@ public final class BinarySearchTree<E extends Comparable<E>> implements Tree<E> 
             return;
         }
         if (e.compareTo((E) node.e) < 0 && node.left == null) {
-            node.left = new Node(e);
+            node.left = new Node<>(e);
             size++;
             //终止条件
             return;
         }
         if (e.compareTo((E) node.e) > 0 && node.right == null) {
-            node.right = new Node(e);
+            node.right = new Node<>(e);
             size++;
             //终止条件
             return;
         }
-        if (e.compareTo((E) node.e) < 0) {
+        if (e.compareTo(node.e) < 0) {
             //要添加的元素E < 当前节点的元素E 此时要添加的元素E 一定在当前节点的左子树上
             add(node.left, e);
         } else {
@@ -400,10 +400,10 @@ public final class BinarySearchTree<E extends Comparable<E>> implements Tree<E> 
             //先判定如果当前节点为空，那么如果需要添加，那么一定需要new一个节点Node，存放新的元素E
             return new Node<>(e);
         }
-        if (e.compareTo((E) node.e) < 0) {
+        if (e.compareTo(node.e) < 0) {
             //如果 要添加的元素E < 当前节点的元素E 则需要把新的节点挂载在当前元素的左子树上
             node.left = addNode(node.left, e);
-        } else if (e.compareTo((E) node.e) > 0) {
+        } else if (e.compareTo(node.e) > 0) {
             //相反 则挂载在当前元素的右子树上
             node.right = addNode(node.right, e);
         }
@@ -496,9 +496,7 @@ public final class BinarySearchTree<E extends Comparable<E>> implements Tree<E> 
     }
 
     private String generateDepthString(int depth) {
-        StringBuilder result = new StringBuilder();
-        result.append("-".repeat(Math.max(0, depth)));
-        return result.toString();
+        return "-".repeat(Math.max(0, depth));
     }
 
     public static void main(String[] args) {
@@ -510,6 +508,6 @@ public final class BinarySearchTree<E extends Comparable<E>> implements Tree<E> 
         tree.add(2);
         tree.levelOrder();
 
-        System.out.println(tree.toString());
+        System.out.println(tree);
     }
 }
