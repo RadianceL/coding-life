@@ -1,17 +1,18 @@
 package com.eddie.structure.tree.impl;
 
-import com.eddie.structure.EQueue;
 import com.eddie.structure.EStack;
 import com.eddie.structure.tree.Tree;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Objects;
+import java.util.Queue;
 
 /**
  * @author eddie
  * @createTime 2018-10-10
  * @description 二分搜索树 左子树所有节点比右子树小 接口实现 对外屏蔽递归实现方式
  */
-public final class BinarySearchTree<E extends Comparable<E>> implements Tree<E> {
+public class BinarySearchTree<E extends Comparable<E>> implements Tree<E> {
 
     //      8  --根节点
     //     / \
