@@ -232,7 +232,7 @@ public class AvlTree<E extends Comparable<E>> implements Tree<E> {
 
     @Override
     public void remove(E e) {
-
+        remove(root, e);
     }
 
     @Override
