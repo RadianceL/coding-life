@@ -7,7 +7,6 @@ public class ConcurrentHashMapTest {
 
 
     /**
-     * 现在我们知道了什么是ConcurrentHashMap和什么时候该用ConcurrentHashMap，下面我们来复习一下CHM的一些关键点。
      * <p>
      * CHM允许并发的读和线程安全的更新操作
      * 在执行写操作时，CHM只锁住部分的Map
