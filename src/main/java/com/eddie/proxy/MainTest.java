@@ -8,7 +8,6 @@ package com.eddie.proxy;
 public class MainTest {
 
     public static void main(String[] args) {
-
         Subject subjectImpl = System.out::println;
 
         InvokeObjectHandler invokeObjectHandler = new InvokeObjectHandler(subjectImpl);
