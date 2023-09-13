@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>coding-agent</module>
+        <module>coding-life-demo</module>
     </modules>
 
     <properties>

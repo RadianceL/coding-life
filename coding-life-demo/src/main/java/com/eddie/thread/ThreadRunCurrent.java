@@ -1,4 +1,4 @@
-package com.eddie.ess;
+package com.eddie.thread;
 
 import java.util.concurrent.Executor;
 
@@ -6,7 +6,7 @@ import java.util.concurrent.Executor;
  * @author eddie.lys
  * @since 2023/8/10
  */
-public class Main {
+public class ThreadRunCurrent {
 
     public static void main(String[] args) {
         System.out.println(Thread.currentThread().getId());

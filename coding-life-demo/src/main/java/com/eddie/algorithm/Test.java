@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class Test {
     public static void main(String[] args) {
-        int target = 24;
-        int[] array = {20, 10, 8, 6, 1};
+        int target = 32;
+        int[] array = {20, 10, 1, 8, 6};
 
         List<Integer> result = findMinimumNumbers(array, target);
 
@@ -21,6 +21,9 @@ public class Test {
         }
     }
 
+    /**
+     * 查找满足target的数组
+     */
     public static List<Integer> findMinimumNumbers(int[] array, int target) {
         return generateCombinations(array, target, 0, new ArrayList<>(), new ArrayList<>(), Integer.MAX_VALUE);
     }
@@ -34,7 +37,6 @@ public class Test {
             if (currentCombination.size() < minimumSize) {
                 minimumCombination.clear();
                 minimumCombination.addAll(currentCombination);
-                minimumSize = currentCombination.size();
             }
             return minimumCombination;
         }
