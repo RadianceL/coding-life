@@ -7,7 +7,7 @@ import java.util.List;
  * @author eddie.lys
  * @since 2023/5/30
  */
-public class Test {
+public class AssemblyTargetFromArray {
     public static void main(String[] args) {
         int target = 32;
         int[] array = {20, 10, 1, 8, 6};
