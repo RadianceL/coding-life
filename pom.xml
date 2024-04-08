@@ -11,6 +11,7 @@
     <modules>
         <module>coding-agent</module>
         <module>coding-life-demo</module>
+        <module>coding-netty</module>
     </modules>
 
     <properties>
